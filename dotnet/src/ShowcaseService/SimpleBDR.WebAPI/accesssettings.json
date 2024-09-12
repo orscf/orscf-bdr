@@ -1,0 +1,15 @@
+{
+  "SubjectProfiles": [
+    {
+      "SubjectName": "orscf-demo-accessor",
+      "SubjectTitle": "ORSCF Demo Accessor",
+      "Disabled": false,
+      "AllowedHosts": [ "*" ],
+      "Permissions": [ "store-Get-*", "store-Search-*", "store-AddNew-*", "store-Update-*", "store-Delete-*" ],
+      "ScopeToExecutingInstituteIdentifier": "INSTY",
+      "ScopeToStudyIdentifier": "*"
+    }
+  ],
+  "JwtSignKey": "innovate",
+  "JwtAllowedIssuers": [ "orscf" ]
+}
