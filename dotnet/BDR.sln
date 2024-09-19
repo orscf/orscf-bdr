@@ -1,0 +1,62 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33627.172
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Showcase", "Showcase", "{D6E2E9A6-6039-4634-9294-E367FBA8815C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BillingData.Connector", "src\Connector\BillingData.Connector.csproj", "{DFD25902-3B1D-42A7-AAF9-104806EAAC3C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BillingData.Contract", "src\Contract\BillingData.Contract.csproj", "{50BD41A2-0A59-4E6E-BF08-322C1DB02B31}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "(Modeling)", "src\EDMX\(Modeling).csproj", "{F66DE0E0-4F05-4B96-A182-605EA0BD7F3C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BillingData.ShowcaseService", "src\ShowcaseService\BillingData.ShowcaseService.csproj", "{EE552FB6-B38E-4783-917F-238A7719F1B2}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BillingData.ShowcaseService.WebAPI", "src\ShowcaseService.WebAPI\BillingData.ShowcaseService.WebAPI.csproj", "{9ED7355E-1500-4C13-AD93-3E6C40A8D25A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "(Solution Items)", "(Solution Items)", "{73A61CBB-AA25-407A-9110-DF86614F36B9}"
+	ProjectSection(SolutionItems) = preProject
+		..\vers\changelog.md = ..\vers\changelog.md
+		ORSCF.BillingData.Contract.nuspec = ORSCF.BillingData.Contract.nuspec
+		..\readme.md = ..\readme.md
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DFD25902-3B1D-42A7-AAF9-104806EAAC3C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DFD25902-3B1D-42A7-AAF9-104806EAAC3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DFD25902-3B1D-42A7-AAF9-104806EAAC3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DFD25902-3B1D-42A7-AAF9-104806EAAC3C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{50BD41A2-0A59-4E6E-BF08-322C1DB02B31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50BD41A2-0A59-4E6E-BF08-322C1DB02B31}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50BD41A2-0A59-4E6E-BF08-322C1DB02B31}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50BD41A2-0A59-4E6E-BF08-322C1DB02B31}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F66DE0E0-4F05-4B96-A182-605EA0BD7F3C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F66DE0E0-4F05-4B96-A182-605EA0BD7F3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F66DE0E0-4F05-4B96-A182-605EA0BD7F3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F66DE0E0-4F05-4B96-A182-605EA0BD7F3C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE552FB6-B38E-4783-917F-238A7719F1B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE552FB6-B38E-4783-917F-238A7719F1B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE552FB6-B38E-4783-917F-238A7719F1B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE552FB6-B38E-4783-917F-238A7719F1B2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9ED7355E-1500-4C13-AD93-3E6C40A8D25A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9ED7355E-1500-4C13-AD93-3E6C40A8D25A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9ED7355E-1500-4C13-AD93-3E6C40A8D25A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9ED7355E-1500-4C13-AD93-3E6C40A8D25A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{EE552FB6-B38E-4783-917F-238A7719F1B2} = {D6E2E9A6-6039-4634-9294-E367FBA8815C}
+		{9ED7355E-1500-4C13-AD93-3E6C40A8D25A} = {D6E2E9A6-6039-4634-9294-E367FBA8815C}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {174839FD-71CD-40F0-9F70-CAE01B1C345A}
+	EndGlobalSection
+EndGlobal
