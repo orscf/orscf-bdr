@@ -16,6 +16,7 @@ using MedicalResearch.BillingData.StoreAccess;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using Microsoft.OpenApi.Writers;
 using MedicalResearch.BillingData.Model;
+using System.Web.UJMW;
 
 namespace MedicalResearch.BillingData.WebAPI {
 
@@ -42,19 +43,27 @@ namespace MedicalResearch.BillingData.WebAPI {
 
       string outDir = AppDomain.CurrentDomain.BaseDirectory;
 
-      services.AddSingleton<IBillableTasks, BillableTaskStore>();
-      services.AddSingleton<IBillableVisits, BillableVisitStore>();
-      services.AddSingleton<IStudyExecutionScopes, StudyExecutionScopeStore>();
-      services.AddSingleton<IBillingDemands, BillingDemandStore>();
-      services.AddSingleton<IInvoices, InvoiceStore>();
+      services.AddSingleton<IBillableTaskStore, BillableTaskStore>();
+      services.AddSingleton<IBillableVisitStore, BillableVisitStore>();
+      services.AddSingleton<IStudyExecutionScopeStore, StudyExecutionScopeStore>();
+      services.AddSingleton<IBillingDemandStore, BillingDemandStore>();
+      services.AddSingleton<IInvoiceStore, InvoiceStore>();
 
-      services.AddControllers();
+      services.AddDynamicUjmwControllers(
+        (c) => {
+          c.AddControllerFor<IBillableTaskStore>("bdr/v2/store/BillableTasks");
+          c.AddControllerFor<IBillableVisitStore>("bdr/v2/store/BillableVisits");
+          c.AddControllerFor<IStudyExecutionScopeStore>("bdr/v2/store/StudyExecutionScopes");
+          c.AddControllerFor<IBillingDemandStore>("bdr/v2/store/BillingDemands");
+          c.AddControllerFor<IInvoiceStore>("bdr/v2/store/Invoices");
+        }
+      );
 
       services.AddSwaggerGen(c => {
         
         c.EnableAnnotations(true, true);
 
-        c.IncludeXmlComments(outDir + "Hl7.Fhir.R4.Core.xml", true);
+        c.IncludeXmlComments(outDir + "Hl7.Fhir.R4.xml", true);
         c.IncludeXmlComments(outDir + "ORSCF.BillingData.Contract.xml", true);
         c.IncludeXmlComments(outDir + "ORSCF.BillingData.Service.xml", true);
         c.IncludeXmlComments(outDir + "ORSCF.BillingData.Service.WebAPI.xml", true);

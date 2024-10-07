@@ -321,7 +321,7 @@ public class BillingDemandEntity {
   [Required]
   public String CreatedByPerson { get; set; }
 
-  [Referer]
+  [Referrer]
   public virtual ObservableCollection<BillableVisitEntity> AssignedVisits { get; set; } = new ObservableCollection<BillableVisitEntity>();
 
   [Principal]
@@ -400,7 +400,7 @@ public class InvoiceEntity {
   /// <summary> *this field is optional </summary>
   public Nullable<DateTime> PaymentReceivedDateUtc { get; set; }
 
-  [Referer]
+  [Referrer]
   public virtual ObservableCollection<BillableVisitEntity> AssignedVisits { get; set; } = new ObservableCollection<BillableVisitEntity>();
 
   [Principal]

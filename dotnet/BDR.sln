@@ -5,8 +5,6 @@ VisualStudioVersion = 17.5.33627.172
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Showcase", "Showcase", "{D6E2E9A6-6039-4634-9294-E367FBA8815C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BillingData.Connector", "src\Connector\BillingData.Connector.csproj", "{DFD25902-3B1D-42A7-AAF9-104806EAAC3C}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BillingData.Contract", "src\Contract\BillingData.Contract.csproj", "{50BD41A2-0A59-4E6E-BF08-322C1DB02B31}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "(Modeling)", "src\EDMX\(Modeling).csproj", "{F66DE0E0-4F05-4B96-A182-605EA0BD7F3C}"
@@ -19,7 +17,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "(Solution Items)", "(Soluti
 	ProjectSection(SolutionItems) = preProject
 		..\vers\changelog.md = ..\vers\changelog.md
 		ORSCF.BillingData.Contract.nuspec = ORSCF.BillingData.Contract.nuspec
+		ORSCF.BillingData.ShowcaseService.nuspec = ORSCF.BillingData.ShowcaseService.nuspec
 		..\readme.md = ..\readme.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5010451C-4694-477C-B79A-007275FA3CDB}"
+	ProjectSection(SolutionItems) = preProject
+		(tools)\MDgen.Readme.txt = (tools)\MDgen.Readme.txt
+		(tools)\MDgen.Sample.tt = (tools)\MDgen.Sample.tt
 	EndProjectSection
 EndProject
 Global
@@ -28,10 +33,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{DFD25902-3B1D-42A7-AAF9-104806EAAC3C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DFD25902-3B1D-42A7-AAF9-104806EAAC3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DFD25902-3B1D-42A7-AAF9-104806EAAC3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DFD25902-3B1D-42A7-AAF9-104806EAAC3C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{50BD41A2-0A59-4E6E-BF08-322C1DB02B31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{50BD41A2-0A59-4E6E-BF08-322C1DB02B31}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{50BD41A2-0A59-4E6E-BF08-322C1DB02B31}.Release|Any CPU.ActiveCfg = Release|Any CPU
