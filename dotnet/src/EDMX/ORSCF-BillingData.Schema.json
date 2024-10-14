@@ -1,94 +1,8 @@
 {
   "DescriptionFormat": "v1.0",
-  "TimestampUtc": "2024-09-15T00:00:00.0000000Z",
+  "TimestampUtc": "2024-10-13T00:00:00.0000000Z",
   "SemanticVersion": "1.5.0",
   "Entities": [
-    {
-      "Name": "BillableTask",
-      "NamePlural": "BillableTasks",
-      "InheritedEntityName": null,
-      "Summary": "",
-      "IsBlEntrypoint": false,
-      "PrimaryKeyIndexName": "PK_BillableTasks",
-      "Indices": [
-        {
-          "Name": "PK_BillableTasks",
-          "Unique": true,
-          "MemberFieldNames": [
-            "TaskGuid"
-          ]
-        },
-        {
-          "Name": "FK_BillableTasks__BillableVisit",
-          "Unique": false,
-          "MemberFieldNames": [
-            "VisitGuid"
-          ]
-        }
-      ],
-      "Fields": [
-        {
-          "Name": "TaskGuid",
-          "Type": "Guid",
-          "MaxLength": 0,
-          "Summary": "a global unique id of a concrete study-task execution which is usually originated at the primary CRF or study management system ('SMS')",
-          "SystemInternal": false,
-          "FixedAfterCreation": true,
-          "SetabilityFlags": 1,
-          "ContentConcern": null,
-          "IdentityLabel": false,
-          "Filterable": 1,
-          "Required": true,
-          "DefaultValue": null,
-          "DbGeneratedIdentity": false
-        },
-        {
-          "Name": "VisitGuid",
-          "Type": "Guid",
-          "MaxLength": 0,
-          "Summary": "a global unique id of a concrete study-visit execution which is usually originated at the primary CRF or study management system ('SMS')",
-          "SystemInternal": false,
-          "FixedAfterCreation": true,
-          "SetabilityFlags": 1,
-          "ContentConcern": null,
-          "IdentityLabel": false,
-          "Filterable": 1,
-          "Required": true,
-          "DefaultValue": null,
-          "DbGeneratedIdentity": false
-        },
-        {
-          "Name": "TaskName",
-          "Type": "String",
-          "MaxLength": 0,
-          "Summary": "unique invariant name of ths task-procedure as defined in the 'StudyWorkflowDefinition' (originated from the sponsor)",
-          "SystemInternal": false,
-          "FixedAfterCreation": true,
-          "SetabilityFlags": 1,
-          "ContentConcern": null,
-          "IdentityLabel": false,
-          "Filterable": 2,
-          "Required": true,
-          "DefaultValue": null,
-          "DbGeneratedIdentity": false
-        },
-        {
-          "Name": "TaskExecutionTitle",
-          "Type": "String",
-          "MaxLength": 0,
-          "Summary": "title of the task execution as defined in the 'StudyWorkflowDefinition' (originated from the sponsor)",
-          "SystemInternal": false,
-          "FixedAfterCreation": true,
-          "SetabilityFlags": 1,
-          "ContentConcern": null,
-          "IdentityLabel": false,
-          "Filterable": 2,
-          "Required": true,
-          "DefaultValue": null,
-          "DbGeneratedIdentity": false
-        }
-      ]
-    },
     {
       "Name": "BillableVisit",
       "NamePlural": "BillableVisits",
@@ -109,20 +23,6 @@
           "Unique": false,
           "MemberFieldNames": [
             "StudyExecutionIdentifier"
-          ]
-        },
-        {
-          "Name": "FK_BillableVisits__AssignedBillingDemand",
-          "Unique": false,
-          "MemberFieldNames": [
-            "BillingDemandId"
-          ]
-        },
-        {
-          "Name": "FK_BillableVisits__AssignedInvoice",
-          "Unique": false,
-          "MemberFieldNames": [
-            "InvoiceId"
           ]
         }
       ],
@@ -188,7 +88,7 @@
           "DbGeneratedIdentity": false
         },
         {
-          "Name": "VisitExecutionTitle",
+          "Name": "UniqueExecutionName",
           "Type": "String",
           "MaxLength": 0,
           "Summary": "title of the visit execution as defined in the 'StudyWorkflowDefinition' (originated from the sponsor)",
@@ -203,70 +103,10 @@
           "DbGeneratedIdentity": false
         },
         {
-          "Name": "BillingDemandId",
-          "Type": "Guid",
-          "MaxLength": 0,
-          "Summary": "",
-          "SystemInternal": false,
-          "FixedAfterCreation": false,
-          "SetabilityFlags": 7,
-          "ContentConcern": null,
-          "IdentityLabel": false,
-          "Filterable": 1,
-          "Required": false,
-          "DefaultValue": null,
-          "DbGeneratedIdentity": false
-        },
-        {
-          "Name": "InvoiceId",
-          "Type": "Guid",
-          "MaxLength": 0,
-          "Summary": "",
-          "SystemInternal": false,
-          "FixedAfterCreation": false,
-          "SetabilityFlags": 7,
-          "ContentConcern": null,
-          "IdentityLabel": false,
-          "Filterable": 1,
-          "Required": false,
-          "DefaultValue": null,
-          "DbGeneratedIdentity": false
-        },
-        {
           "Name": "ExecutionEndDateUtc",
           "Type": "DateTime",
           "MaxLength": 0,
           "Summary": "",
-          "SystemInternal": false,
-          "FixedAfterCreation": false,
-          "SetabilityFlags": 7,
-          "ContentConcern": null,
-          "IdentityLabel": false,
-          "Filterable": 1,
-          "Required": false,
-          "DefaultValue": null,
-          "DbGeneratedIdentity": false
-        },
-        {
-          "Name": "SponsorValidationDateUtc",
-          "Type": "DateTime",
-          "MaxLength": 0,
-          "Summary": "indicates, that the visit is ready to get assigned to a 'BillingDemand' (usually this state is managed by the sponsor) This can only be set after there is a valid 'ExecutionEndDateUtc'",
-          "SystemInternal": false,
-          "FixedAfterCreation": false,
-          "SetabilityFlags": 7,
-          "ContentConcern": null,
-          "IdentityLabel": false,
-          "Filterable": 1,
-          "Required": false,
-          "DefaultValue": null,
-          "DbGeneratedIdentity": false
-        },
-        {
-          "Name": "ExecutorValidationDateUtc",
-          "Type": "DateTime",
-          "MaxLength": 0,
-          "Summary": "indicates, that the visit is ready to get assigned to a 'Invoice' (usually this state is managed by the executor) This can only be set after either the 'SponsorValidationDateUtc' is set (and there is a Demand) nor the states are only managed by the executor, so that the demand-part is completely skipped.",
           "SystemInternal": false,
           "FixedAfterCreation": false,
           "SetabilityFlags": 7,
@@ -368,6 +208,256 @@
           "IdentityLabel": false,
           "Filterable": 2,
           "Required": false,
+          "DefaultValue": null,
+          "DbGeneratedIdentity": false
+        },
+        {
+          "Name": "SiteRelatedTaxPercentage",
+          "Type": "Decimal",
+          "MaxLength": 0,
+          "Summary": "",
+          "SystemInternal": false,
+          "FixedAfterCreation": false,
+          "SetabilityFlags": 7,
+          "ContentConcern": null,
+          "IdentityLabel": false,
+          "Filterable": 1,
+          "Required": true,
+          "DefaultValue": null,
+          "DbGeneratedIdentity": false
+        },
+        {
+          "Name": "SiteRelatedCurrency",
+          "Type": "String",
+          "MaxLength": 0,
+          "Summary": "ISO 3-Letter Code (USD, EUR, ...)",
+          "SystemInternal": false,
+          "FixedAfterCreation": false,
+          "SetabilityFlags": 7,
+          "ContentConcern": null,
+          "IdentityLabel": false,
+          "Filterable": 2,
+          "Required": true,
+          "DefaultValue": null,
+          "DbGeneratedIdentity": false
+        }
+      ]
+    },
+    {
+      "Name": "VisitBillingRecord",
+      "NamePlural": "VisitBillingRecords",
+      "InheritedEntityName": null,
+      "Summary": "Respresents a Snapshot, containig al the values, which are required to be fixed in relation to a concrete invoice or demand",
+      "IsBlEntrypoint": false,
+      "PrimaryKeyIndexName": "PK_VisitBillingRecords",
+      "Indices": [
+        {
+          "Name": "FK__BillableVisits_BillableVisit",
+          "Unique": false,
+          "MemberFieldNames": [
+            "VisitGuid"
+          ]
+        },
+        {
+          "Name": "FK__BillingDemands_AssignedDemand",
+          "Unique": false,
+          "MemberFieldNames": [
+            "BillingDemandId"
+          ]
+        },
+        {
+          "Name": "FK__Invoices_AssignedInvoice",
+          "Unique": false,
+          "MemberFieldNames": [
+            "InvoiceId"
+          ]
+        },
+        {
+          "Name": "PK_VisitBillingRecords",
+          "Unique": true,
+          "MemberFieldNames": [
+            "BillingRecordId"
+          ]
+        }
+      ],
+      "Fields": [
+        {
+          "Name": "BillingRecordId",
+          "Type": "Int64",
+          "MaxLength": 0,
+          "Summary": "",
+          "SystemInternal": false,
+          "FixedAfterCreation": false,
+          "SetabilityFlags": 0,
+          "ContentConcern": null,
+          "IdentityLabel": false,
+          "Filterable": 1,
+          "Required": true,
+          "DefaultValue": null,
+          "DbGeneratedIdentity": true
+        },
+        {
+          "Name": "VisitGuid",
+          "Type": "Guid",
+          "MaxLength": 0,
+          "Summary": "",
+          "SystemInternal": false,
+          "FixedAfterCreation": false,
+          "SetabilityFlags": 7,
+          "ContentConcern": null,
+          "IdentityLabel": false,
+          "Filterable": 1,
+          "Required": true,
+          "DefaultValue": null,
+          "DbGeneratedIdentity": false
+        },
+        {
+          "Name": "CreationDateUtc",
+          "Type": "DateTime",
+          "MaxLength": 0,
+          "Summary": "",
+          "SystemInternal": false,
+          "FixedAfterCreation": false,
+          "SetabilityFlags": 7,
+          "ContentConcern": null,
+          "IdentityLabel": false,
+          "Filterable": 1,
+          "Required": true,
+          "DefaultValue": null,
+          "DbGeneratedIdentity": false
+        },
+        {
+          "Name": "SponsorValidationDateUtc",
+          "Type": "DateTime",
+          "MaxLength": 0,
+          "Summary": "",
+          "SystemInternal": false,
+          "FixedAfterCreation": false,
+          "SetabilityFlags": 7,
+          "ContentConcern": null,
+          "IdentityLabel": false,
+          "Filterable": 1,
+          "Required": false,
+          "DefaultValue": null,
+          "DbGeneratedIdentity": false
+        },
+        {
+          "Name": "ExecutorValidationDateUtc",
+          "Type": "DateTime",
+          "MaxLength": 0,
+          "Summary": "",
+          "SystemInternal": false,
+          "FixedAfterCreation": false,
+          "SetabilityFlags": 7,
+          "ContentConcern": null,
+          "IdentityLabel": false,
+          "Filterable": 1,
+          "Required": false,
+          "DefaultValue": null,
+          "DbGeneratedIdentity": false
+        },
+        {
+          "Name": "BillingDemandId",
+          "Type": "Guid",
+          "MaxLength": 0,
+          "Summary": "",
+          "SystemInternal": false,
+          "FixedAfterCreation": false,
+          "SetabilityFlags": 7,
+          "ContentConcern": null,
+          "IdentityLabel": false,
+          "Filterable": 1,
+          "Required": false,
+          "DefaultValue": null,
+          "DbGeneratedIdentity": false
+        },
+        {
+          "Name": "InvoiceId",
+          "Type": "Guid",
+          "MaxLength": 0,
+          "Summary": "",
+          "SystemInternal": false,
+          "FixedAfterCreation": false,
+          "SetabilityFlags": 7,
+          "ContentConcern": null,
+          "IdentityLabel": false,
+          "Filterable": 1,
+          "Required": false,
+          "DefaultValue": null,
+          "DbGeneratedIdentity": false
+        },
+        {
+          "Name": "FixedExecutionState",
+          "Type": "Int32",
+          "MaxLength": 0,
+          "Summary": "",
+          "SystemInternal": false,
+          "FixedAfterCreation": false,
+          "SetabilityFlags": 7,
+          "ContentConcern": null,
+          "IdentityLabel": false,
+          "Filterable": 1,
+          "Required": true,
+          "DefaultValue": null,
+          "DbGeneratedIdentity": false
+        },
+        {
+          "Name": "FixedPriceOfVisit",
+          "Type": "Decimal",
+          "MaxLength": 0,
+          "Summary": "",
+          "SystemInternal": false,
+          "FixedAfterCreation": false,
+          "SetabilityFlags": 7,
+          "ContentConcern": null,
+          "IdentityLabel": false,
+          "Filterable": 1,
+          "Required": true,
+          "DefaultValue": null,
+          "DbGeneratedIdentity": false
+        },
+        {
+          "Name": "FixedPriceOfTasks",
+          "Type": "Decimal",
+          "MaxLength": 0,
+          "Summary": "",
+          "SystemInternal": false,
+          "FixedAfterCreation": false,
+          "SetabilityFlags": 7,
+          "ContentConcern": null,
+          "IdentityLabel": false,
+          "Filterable": 1,
+          "Required": true,
+          "DefaultValue": null,
+          "DbGeneratedIdentity": false
+        },
+        {
+          "Name": "FixedTaxPercentage",
+          "Type": "Decimal",
+          "MaxLength": 0,
+          "Summary": "",
+          "SystemInternal": false,
+          "FixedAfterCreation": false,
+          "SetabilityFlags": 7,
+          "ContentConcern": null,
+          "IdentityLabel": false,
+          "Filterable": 1,
+          "Required": true,
+          "DefaultValue": null,
+          "DbGeneratedIdentity": false
+        },
+        {
+          "Name": "TasksRelatedInfo",
+          "Type": "String",
+          "MaxLength": 0,
+          "Summary": "",
+          "SystemInternal": false,
+          "FixedAfterCreation": false,
+          "SetabilityFlags": 7,
+          "ContentConcern": null,
+          "IdentityLabel": false,
+          "Filterable": 2,
+          "Required": true,
           "DefaultValue": null,
           "DbGeneratedIdentity": false
         }
@@ -510,6 +600,13 @@
           "MemberFieldNames": [
             "StudyExecutionIdentifier"
           ]
+        },
+        {
+          "Name": "FK_Invoices_Invoices_CorrectionOf",
+          "Unique": false,
+          "MemberFieldNames": [
+            "CorrectionOfInvoiceId"
+          ]
         }
       ],
       "Fields": [
@@ -647,25 +744,26 @@
           "Required": false,
           "DefaultValue": null,
           "DbGeneratedIdentity": false
+        },
+        {
+          "Name": "CorrectionOfInvoiceId",
+          "Type": "Guid",
+          "MaxLength": 0,
+          "Summary": "",
+          "SystemInternal": false,
+          "FixedAfterCreation": false,
+          "SetabilityFlags": 7,
+          "ContentConcern": null,
+          "IdentityLabel": false,
+          "Filterable": 1,
+          "Required": false,
+          "DefaultValue": null,
+          "DbGeneratedIdentity": false
         }
       ]
     }
   ],
   "Relations": [
-    {
-      "Name": "BillableVisitBillableTask",
-      "PrimaryEntityName": "BillableVisit",
-      "ForeignEntityName": "BillableTask",
-      "ForeignKeyIndexName": "FK_BillableTasks__BillableVisit",
-      "IsLookupRelation": false,
-      "PrimaryEntityIsOptional": false,
-      "ForeignEntityIsMultiple": true,
-      "PrimaryNavigationName": "BillableTasks",
-      "ForeignNavigationName": "BillableVisit",
-      "PrimaryNavigationSummary": "",
-      "ForeignNavigationSummary": "",
-      "CascadeDelete": true
-    },
     {
       "Name": "StudyExecutionScopeBillableVisit",
       "PrimaryEntityName": "StudyExecutionScope",
@@ -681,29 +779,15 @@
       "CascadeDelete": true
     },
     {
-      "Name": "BillingDemandBillableVisit",
-      "PrimaryEntityName": "BillingDemand",
-      "ForeignEntityName": "BillableVisit",
-      "ForeignKeyIndexName": "FK_BillableVisits__AssignedBillingDemand",
+      "Name": "BillableVisitBillingRecord",
+      "PrimaryEntityName": "BillableVisit",
+      "ForeignEntityName": "VisitBillingRecord",
+      "ForeignKeyIndexName": "FK__BillableVisits_BillableVisit",
       "IsLookupRelation": true,
-      "PrimaryEntityIsOptional": true,
+      "PrimaryEntityIsOptional": false,
       "ForeignEntityIsMultiple": true,
-      "PrimaryNavigationName": "AssignedVisits",
-      "ForeignNavigationName": "AssignedBillingDemand",
-      "PrimaryNavigationSummary": "",
-      "ForeignNavigationSummary": "",
-      "CascadeDelete": false
-    },
-    {
-      "Name": "InvoiceBillableVisit",
-      "PrimaryEntityName": "Invoice",
-      "ForeignEntityName": "BillableVisit",
-      "ForeignKeyIndexName": "FK_BillableVisits__AssignedInvoice",
-      "IsLookupRelation": true,
-      "PrimaryEntityIsOptional": true,
-      "ForeignEntityIsMultiple": true,
-      "PrimaryNavigationName": "AssignedVisits",
-      "ForeignNavigationName": "AssignedInvoice",
+      "PrimaryNavigationName": "BillingRecord",
+      "ForeignNavigationName": "BillableVisit",
       "PrimaryNavigationSummary": "",
       "ForeignNavigationSummary": "",
       "CascadeDelete": false
@@ -723,6 +807,20 @@
       "CascadeDelete": true
     },
     {
+      "Name": "BillingDemandBillingRecord",
+      "PrimaryEntityName": "BillingDemand",
+      "ForeignEntityName": "VisitBillingRecord",
+      "ForeignKeyIndexName": "FK__BillingDemands_AssignedDemand",
+      "IsLookupRelation": true,
+      "PrimaryEntityIsOptional": true,
+      "ForeignEntityIsMultiple": true,
+      "PrimaryNavigationName": "BillingRecords",
+      "ForeignNavigationName": "AssignedDemand",
+      "PrimaryNavigationSummary": "",
+      "ForeignNavigationSummary": "",
+      "CascadeDelete": false
+    },
+    {
       "Name": "StudyExecutionScopeInvoice",
       "PrimaryEntityName": "StudyExecutionScope",
       "ForeignEntityName": "Invoice",
@@ -735,6 +833,34 @@
       "PrimaryNavigationSummary": "",
       "ForeignNavigationSummary": "",
       "CascadeDelete": true
+    },
+    {
+      "Name": "InvoiceBillingRecord",
+      "PrimaryEntityName": "Invoice",
+      "ForeignEntityName": "VisitBillingRecord",
+      "ForeignKeyIndexName": "FK__Invoices_AssignedInvoice",
+      "IsLookupRelation": true,
+      "PrimaryEntityIsOptional": true,
+      "ForeignEntityIsMultiple": true,
+      "PrimaryNavigationName": "BillingRecord",
+      "ForeignNavigationName": "AssignedInvoice",
+      "PrimaryNavigationSummary": "",
+      "ForeignNavigationSummary": "",
+      "CascadeDelete": false
+    },
+    {
+      "Name": "InvoiceInvoice",
+      "PrimaryEntityName": "Invoice",
+      "ForeignEntityName": "Invoice",
+      "ForeignKeyIndexName": "FK_Invoices_Invoices_CorrectionOf",
+      "IsLookupRelation": true,
+      "PrimaryEntityIsOptional": true,
+      "ForeignEntityIsMultiple": true,
+      "PrimaryNavigationName": "Corrections",
+      "ForeignNavigationName": "CorrectionOf",
+      "PrimaryNavigationSummary": "",
+      "ForeignNavigationSummary": "",
+      "CascadeDelete": false
     }
   ]
 }

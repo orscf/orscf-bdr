@@ -43,19 +43,19 @@ namespace MedicalResearch.BillingData.WebAPI {
 
       string outDir = AppDomain.CurrentDomain.BaseDirectory;
 
-      services.AddSingleton<IBillableTaskStore, BillableTaskStore>();
       services.AddSingleton<IBillableVisitStore, BillableVisitStore>();
       services.AddSingleton<IStudyExecutionScopeStore, StudyExecutionScopeStore>();
+      services.AddSingleton<IVisitBillingRecordStore, VisitBillingRecordStore>();
       services.AddSingleton<IBillingDemandStore, BillingDemandStore>();
       services.AddSingleton<IInvoiceStore, InvoiceStore>();
 
       services.AddDynamicUjmwControllers(
         (c) => {
-          c.AddControllerFor<IBillableTaskStore>("bdr/v2/store/BillableTasks");
-          c.AddControllerFor<IBillableVisitStore>("bdr/v2/store/BillableVisits");
-          c.AddControllerFor<IStudyExecutionScopeStore>("bdr/v2/store/StudyExecutionScopes");
-          c.AddControllerFor<IBillingDemandStore>("bdr/v2/store/BillingDemands");
-          c.AddControllerFor<IInvoiceStore>("bdr/v2/store/Invoices");
+          c.AddControllerFor<IBillableVisitStore>("bdr/v2/store/BillableVisit");
+          c.AddControllerFor<IStudyExecutionScopeStore>("bdr/v2/store/StudyExecutionScope");
+          c.AddControllerFor<IVisitBillingRecordStore>("bdr/v2/store/VisitBillingRecord");
+          c.AddControllerFor<IBillingDemandStore>("bdr/v2/store/BillingDemand");
+          c.AddControllerFor<IInvoiceStore>("bdr/v2/store/Invoice");
         }
       );
 

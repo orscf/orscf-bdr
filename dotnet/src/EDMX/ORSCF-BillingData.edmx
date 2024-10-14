@@ -21,11 +21,6 @@
             <End Role="StudyExecutionScope" EntitySet="StudyExecutionScopes" />
             <End Role="BillableVisit" EntitySet="BillableVisits" />
           </AssociationSet>
-          <EntitySet Name="BillableTasks" EntityType="DomainModel.BillableTask" />
-          <AssociationSet Name="BillableVisitBillableTask" Association="DomainModel.BillableVisitBillableTask">
-            <End Role="BillableVisit" EntitySet="BillableVisits" />
-            <End Role="BillableTask" EntitySet="BillableTasks" />
-          </AssociationSet>
           <AssociationSet Name="StudyExecutionScopeBillingDemand" Association="DomainModel.StudyExecutionScopeBillingDemand">
             <End Role="StudyExecutionScope" EntitySet="StudyExecutionScopes" />
             <End Role="BillingDemand" EntitySet="BillingDemands" />
@@ -34,13 +29,22 @@
             <End Role="StudyExecutionScope" EntitySet="StudyExecutionScopes" />
             <End Role="Invoice" EntitySet="Invoices" />
           </AssociationSet>
-          <AssociationSet Name="BillingDemandBillableVisit" Association="DomainModel.BillingDemandBillableVisit">
-            <End Role="BillingDemand" EntitySet="BillingDemands" />
+          <EntitySet Name="VisitBillingRecords" EntityType="DomainModel.VisitBillingRecord" />
+          <AssociationSet Name="BillableVisitBillingRecord" Association="DomainModel.BillableVisitBillingRecord">
             <End Role="BillableVisit" EntitySet="BillableVisits" />
+            <End Role="BillingRecord" EntitySet="VisitBillingRecords" />
           </AssociationSet>
-          <AssociationSet Name="InvoiceBillableVisit" Association="DomainModel.InvoiceBillableVisit">
+          <AssociationSet Name="BillingDemandBillingRecord" Association="DomainModel.BillingDemandBillingRecord">
+            <End Role="BillingDemand" EntitySet="BillingDemands" />
+            <End Role="BillingRecord" EntitySet="VisitBillingRecords" />
+          </AssociationSet>
+          <AssociationSet Name="InvoiceBillingRecord" Association="DomainModel.InvoiceBillingRecord">
             <End Role="Invoice" EntitySet="Invoices" />
-            <End Role="BillableVisit" EntitySet="BillableVisits" />
+            <End Role="BillingRecord" EntitySet="VisitBillingRecords" />
+          </AssociationSet>
+          <AssociationSet Name="InvoiceInvoice" Association="DomainModel.InvoiceInvoice">
+            <End Role="Invoice" EntitySet="Invoices" />
+            <End Role="Invoice1" EntitySet="Invoices" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="BillingDemand">
@@ -54,10 +58,10 @@
           <Property Name="OfficialNumber" Type="String" Nullable="false" />
           <NavigationProperty Name="StudyExecution" Relationship="DomainModel.StudyExecutionScopeBillingDemand" FromRole="BillingDemand" ToRole="StudyExecutionScope" />
           <Property Name="StudyExecutionIdentifier" Type="Guid" Nullable="false" />
-          <NavigationProperty Name="AssignedVisits" Relationship="DomainModel.BillingDemandBillableVisit" FromRole="BillingDemand" ToRole="BillableVisit" />
           <Property Name="TransmissionDateUtc" Type="DateTime" Nullable="true" />
           <Property Name="CreationDateUtc" Type="DateTime" Nullable="false" />
           <Property Name="CreatedByPerson" Type="String" Nullable="false" />
+          <NavigationProperty Name="BillingRecords" Relationship="DomainModel.BillingDemandBillingRecord" FromRole="BillingDemand" ToRole="BillingRecord" />
         </EntityType>
         <EntityType Name="Invoice">
           <Documentation>
@@ -83,7 +87,6 @@
               <LongDescription>FIX</LongDescription>
             </Documentation>
           </Property>
-          <NavigationProperty Name="AssignedVisits" Relationship="DomainModel.InvoiceBillableVisit" FromRole="Invoice" ToRole="BillableVisit" />
           <Property Name="OffcialInvoiceDate" Type="DateTime" Nullable="false" >
             <Documentation>
               <LongDescription>FIX</LongDescription>
@@ -94,6 +97,10 @@
           <Property Name="CreatedByPerson" Type="String" Nullable="false" />
           <Property Name="PaymentSubmittedDateUtc" Type="DateTime" Nullable="true" />
           <Property Name="PaymentReceivedDateUtc" Type="DateTime" Nullable="true" />
+          <NavigationProperty Name="BillingRecord" Relationship="DomainModel.InvoiceBillingRecord" FromRole="Invoice" ToRole="BillingRecord" />
+          <NavigationProperty Name="Corrections" Relationship="DomainModel.InvoiceInvoice" FromRole="Invoice" ToRole="Invoice1" />
+          <NavigationProperty Name="CorrectionOf" Relationship="DomainModel.InvoiceInvoice" FromRole="Invoice1" ToRole="Invoice" />
+          <Property Name="CorrectionOfInvoiceId" Type="Guid" Nullable="true" />
         </EntityType>
         <EntityType Name="StudyExecutionScope">
           <Key>
@@ -131,6 +138,12 @@
           <NavigationProperty Name="BillableVisits" Relationship="DomainModel.StudyExecutionScopeBillableVisit" FromRole="StudyExecutionScope" ToRole="BillableVisit" />
           <NavigationProperty Name="BillingDemands" Relationship="DomainModel.StudyExecutionScopeBillingDemand" FromRole="StudyExecutionScope" ToRole="BillingDemand" />
           <NavigationProperty Name="Invoices" Relationship="DomainModel.StudyExecutionScopeInvoice" FromRole="StudyExecutionScope" ToRole="Invoice" />
+          <Property Name="SiteRelatedTaxPercentage" Type="Decimal" Nullable="false" />
+          <Property Name="SiteRelatedCurrency" Type="String" Nullable="false" >
+            <Documentation>
+              <Summary>ISO 3-Letter Code (USD, EUR, ...)</Summary>
+            </Documentation>
+          </Property>
         </EntityType>
         <EntityType Name="BillableVisit">
           <Key>
@@ -157,27 +170,13 @@
               <Summary>unique invariant name of the visit-procedure as defined in the 'StudyWorkflowDefinition' (originated from the sponsor)</Summary>
             </Documentation>
           </Property>
-          <Property Name="VisitExecutionTitle" Type="String" Nullable="false" >
+          <Property Name="UniqueExecutionName" Type="String" Nullable="false" >
             <Documentation>
               <Summary>title of the visit execution as defined in the 'StudyWorkflowDefinition' (originated from the sponsor)</Summary>
             </Documentation>
           </Property>
-          <NavigationProperty Name="BillableTasks" Relationship="DomainModel.BillableVisitBillableTask" FromRole="BillableVisit" ToRole="BillableTask" />
-          <NavigationProperty Name="AssignedBillingDemand" Relationship="DomainModel.BillingDemandBillableVisit" FromRole="BillableVisit" ToRole="BillingDemand" />
-          <Property Name="BillingDemandId" Type="Guid" Nullable="true" />
-          <NavigationProperty Name="AssignedInvoice" Relationship="DomainModel.InvoiceBillableVisit" FromRole="BillableVisit" ToRole="Invoice" />
-          <Property Name="InvoiceId" Type="Guid" Nullable="true" />
           <Property Name="ExecutionEndDateUtc" Type="DateTime" Nullable="true" />
-          <Property Name="SponsorValidationDateUtc" Type="DateTime" Nullable="true" >
-            <Documentation>
-              <Summary>indicates, that the visit is ready to get assigned to a 'BillingDemand' (usually this state is managed by the sponsor) This can only be set after there is a valid 'ExecutionEndDateUtc'</Summary>
-            </Documentation>
-          </Property>
-          <Property Name="ExecutorValidationDateUtc" Type="DateTime" Nullable="true" >
-            <Documentation>
-              <Summary>indicates, that the visit is ready to get assigned to a 'Invoice' (usually this state is managed by the executor) This can only be set after either the 'SponsorValidationDateUtc' is set (and there is a Demand) nor the states are only managed by the executor, so that the demand-part is completely skipped.</Summary>
-            </Documentation>
-          </Property>
+          <NavigationProperty Name="BillingRecord" Relationship="DomainModel.BillableVisitBillingRecord" FromRole="BillableVisit" ToRole="BillingRecord" />
         </EntityType>
         <Association Name="StudyExecutionScopeBillableVisit">
           <End Type="DomainModel.StudyExecutionScope" Role="StudyExecutionScope" Multiplicity="1" >
@@ -190,50 +189,6 @@
             </Principal>
             <Dependent Role="BillableVisit">
               <PropertyRef Name="StudyExecutionIdentifier" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityType Name="BillableTask">
-          <Key>
-            <PropertyRef Name="TaskGuid" />
-          </Key>
-          <Property Name="TaskGuid" Type="Guid" Nullable="false" annotation:StoreGeneratedPattern="None" >
-            <Documentation>
-              <Summary>a global unique id of a concrete study-task execution which is usually originated at the primary CRF or study management system ('SMS')</Summary>
-              <LongDescription>FIX</LongDescription>
-            </Documentation>
-          </Property>
-          <NavigationProperty Name="BillableVisit" Relationship="DomainModel.BillableVisitBillableTask" FromRole="BillableTask" ToRole="BillableVisit" />
-          <Property Name="VisitGuid" Type="Guid" Nullable="false" >
-            <Documentation>
-              <Summary>a global unique id of a concrete study-visit execution which is usually originated at the primary CRF or study management system ('SMS')</Summary>
-              <LongDescription>FIX</LongDescription>
-            </Documentation>
-          </Property>
-          <Property Name="TaskName" Type="String" Nullable="false" >
-            <Documentation>
-              <Summary>unique invariant name of ths task-procedure as defined in the 'StudyWorkflowDefinition' (originated from the sponsor)</Summary>
-              <LongDescription>FIX</LongDescription>
-            </Documentation>
-          </Property>
-          <Property Name="TaskExecutionTitle" Type="String" Nullable="false" >
-            <Documentation>
-              <Summary>title of the task execution as defined in the 'StudyWorkflowDefinition' (originated from the sponsor)</Summary>
-              <LongDescription>FIX</LongDescription>
-            </Documentation>
-          </Property>
-        </EntityType>
-        <Association Name="BillableVisitBillableTask">
-          <End Type="DomainModel.BillableVisit" Role="BillableVisit" Multiplicity="1" >
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DomainModel.BillableTask" Role="BillableTask" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="BillableVisit">
-              <PropertyRef Name="VisitGuid" />
-            </Principal>
-            <Dependent Role="BillableTask">
-              <PropertyRef Name="VisitGuid" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -265,27 +220,74 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="BillingDemandBillableVisit">
+        <EntityType Name="VisitBillingRecord">
+          <Documentation>
+            <Summary>Respresents a Snapshot, containig al the values, which are required to be fixed in relation to a concrete invoice or demand</Summary>
+          </Documentation>
+          <Key>
+            <PropertyRef Name="BillingRecordId" />
+          </Key>
+          <Property Name="BillingRecordId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="BillableVisit" Relationship="DomainModel.BillableVisitBillingRecord" FromRole="BillingRecord" ToRole="BillableVisit" />
+          <Property Name="VisitGuid" Type="Guid" Nullable="false" />
+          <Property Name="CreationDateUtc" Type="DateTime" Nullable="false" />
+          <Property Name="SponsorValidationDateUtc" Type="DateTime" Nullable="true" />
+          <Property Name="ExecutorValidationDateUtc" Type="DateTime" Nullable="true" />
+          <NavigationProperty Name="AssignedDemand" Relationship="DomainModel.BillingDemandBillingRecord" FromRole="BillingRecord" ToRole="BillingDemand" />
+          <Property Name="BillingDemandId" Type="Guid" Nullable="true" />
+          <NavigationProperty Name="AssignedInvoice" Relationship="DomainModel.InvoiceBillingRecord" FromRole="BillingRecord" ToRole="Invoice" />
+          <Property Name="InvoiceId" Type="Guid" Nullable="true" />
+          <Property Name="FixedExecutionState" Type="Int32" Nullable="false" />
+          <Property Name="FixedPriceOfVisit" Type="Decimal" Nullable="false" />
+          <Property Name="FixedPriceOfTasks" Type="Decimal" Nullable="false" />
+          <Property Name="FixedTaxPercentage" Type="Decimal" Nullable="false" />
+          <Property Name="TasksRelatedInfo" Type="String" Nullable="false" />
+        </EntityType>
+        <Association Name="BillableVisitBillingRecord">
+          <End Type="DomainModel.BillableVisit" Role="BillableVisit" Multiplicity="1" />
+          <End Type="DomainModel.VisitBillingRecord" Role="BillingRecord" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BillableVisit">
+              <PropertyRef Name="VisitGuid" />
+            </Principal>
+            <Dependent Role="BillingRecord">
+              <PropertyRef Name="VisitGuid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="BillingDemandBillingRecord">
           <End Type="DomainModel.BillingDemand" Role="BillingDemand" Multiplicity="0..1" />
-          <End Type="DomainModel.BillableVisit" Role="BillableVisit" Multiplicity="*" />
+          <End Type="DomainModel.VisitBillingRecord" Role="BillingRecord" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="BillingDemand">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="BillableVisit">
+            <Dependent Role="BillingRecord">
               <PropertyRef Name="BillingDemandId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="InvoiceBillableVisit">
+        <Association Name="InvoiceBillingRecord">
           <End Type="DomainModel.Invoice" Role="Invoice" Multiplicity="0..1" />
-          <End Type="DomainModel.BillableVisit" Role="BillableVisit" Multiplicity="*" />
+          <End Type="DomainModel.VisitBillingRecord" Role="BillingRecord" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Invoice">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="BillableVisit">
+            <Dependent Role="BillingRecord">
               <PropertyRef Name="InvoiceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="InvoiceInvoice">
+          <End Type="DomainModel.Invoice" Role="Invoice" Multiplicity="0..1" />
+          <End Type="DomainModel.Invoice" Role="Invoice1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Invoice">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Invoice1">
+              <PropertyRef Name="CorrectionOfInvoiceId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -319,17 +321,18 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="1e673f0774584ac2be5350aef5de4487" Name="Schema" ZoomLevel="80">
-        <EntityTypeShape EntityType="DomainModel.BillingDemand" Width="2.625" PointX="8.5" PointY="3.25" FillColor="Purple" />
-        <EntityTypeShape EntityType="DomainModel.Invoice" Width="2.625" PointX="12.625" PointY="2.875" FillColor="Purple" />
+        <EntityTypeShape EntityType="DomainModel.BillingDemand" Width="2.625" PointX="8.625" PointY="3.25" FillColor="Purple" />
+        <EntityTypeShape EntityType="DomainModel.Invoice" Width="2.625" PointX="11.75" PointY="2.875" FillColor="Purple" />
         <EntityTypeShape EntityType="DomainModel.StudyExecutionScope" Width="3" PointX="4" PointY="1.375" FillColor="Purple" />
         <EntityTypeShape EntityType="DomainModel.BillableVisit" Width="3" PointX="4" PointY="5" FillColor="Purple" />
         <AssociationConnector Association="DomainModel.StudyExecutionScopeBillableVisit" />
-        <EntityTypeShape EntityType="DomainModel.BillableTask" Width="3" PointX="4" PointY="9.25" FillColor="Purple" />
-        <AssociationConnector Association="DomainModel.BillableVisitBillableTask" />
         <AssociationConnector Association="DomainModel.StudyExecutionScopeBillingDemand" />
         <AssociationConnector Association="DomainModel.StudyExecutionScopeInvoice" />
-        <AssociationConnector Association="DomainModel.BillingDemandBillableVisit" />
-        <AssociationConnector Association="DomainModel.InvoiceBillableVisit" />
+        <EntityTypeShape EntityType="DomainModel.VisitBillingRecord" Width="2.625" PointX="8.625" PointY="6.375" FillColor="Purple" />
+        <AssociationConnector Association="DomainModel.BillableVisitBillingRecord" />
+        <AssociationConnector Association="DomainModel.BillingDemandBillingRecord" />
+        <AssociationConnector Association="DomainModel.InvoiceBillingRecord" />
+        <AssociationConnector Association="DomainModel.InvoiceInvoice" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

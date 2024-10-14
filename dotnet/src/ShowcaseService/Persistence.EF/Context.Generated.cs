@@ -9,11 +9,12 @@ namespace MedicalResearch.BillingData.Persistence.EF {
 
     public const String SchemaVersion = "1.5.0";
 
-    public DbSet<BillableTaskEntity> BillableTasks { get; set; }
-
     public DbSet<BillableVisitEntity> BillableVisits { get; set; }
 
     public DbSet<StudyExecutionScopeEntity> StudyExecutionScopes { get; set; }
+
+    /// <summary> VisitBillingRecord: Respresents a Snapshot, containig al the values, which are required to be fixed in relation to a concrete invoice or demand </summary>
+    public DbSet<VisitBillingRecordEntity> VisitBillingRecords { get; set; }
 
     /// <summary> BillingDemand: created by the sponsor </summary>
     public DbSet<BillingDemandEntity> BillingDemands { get; set; }
@@ -25,21 +26,6 @@ namespace MedicalResearch.BillingData.Persistence.EF {
       base.OnModelCreating(modelBuilder);
 
 #region Mapping
-
-      //////////////////////////////////////////////////////////////////////////////////////
-      // BillableTask
-      //////////////////////////////////////////////////////////////////////////////////////
-
-      var cfgBillableTask = modelBuilder.Entity<BillableTaskEntity>();
-      cfgBillableTask.ToTable("BdrBillableTasks");
-      cfgBillableTask.HasKey((e) => e.TaskGuid);
-
-      // PRINCIPAL: >>> BillableVisit
-      cfgBillableTask
-        .HasOne((lcl) => lcl.BillableVisit )
-        .WithMany((rem) => rem.BillableTasks )
-        .HasForeignKey(nameof(BillableTaskEntity.VisitGuid))
-        .OnDelete(DeleteBehavior.Cascade);
 
       //////////////////////////////////////////////////////////////////////////////////////
       // BillableVisit
@@ -56,20 +42,6 @@ namespace MedicalResearch.BillingData.Persistence.EF {
         .HasForeignKey(nameof(BillableVisitEntity.StudyExecutionIdentifier))
         .OnDelete(DeleteBehavior.Cascade);
 
-      // LOOKUP: >>> BillingDemand
-      cfgBillableVisit
-        .HasOne((lcl) => lcl.AssignedBillingDemand )
-        .WithMany((rem) => rem.AssignedVisits )
-        .HasForeignKey(nameof(BillableVisitEntity.BillingDemandId))
-        .OnDelete(DeleteBehavior.Restrict);
-
-      // LOOKUP: >>> Invoice
-      cfgBillableVisit
-        .HasOne((lcl) => lcl.AssignedInvoice )
-        .WithMany((rem) => rem.AssignedVisits )
-        .HasForeignKey(nameof(BillableVisitEntity.InvoiceId))
-        .OnDelete(DeleteBehavior.Restrict);
-
       //////////////////////////////////////////////////////////////////////////////////////
       // StudyExecutionScope
       //////////////////////////////////////////////////////////////////////////////////////
@@ -77,6 +49,36 @@ namespace MedicalResearch.BillingData.Persistence.EF {
       var cfgStudyExecutionScope = modelBuilder.Entity<StudyExecutionScopeEntity>();
       cfgStudyExecutionScope.ToTable("BdrStudyExecutionScopes");
       cfgStudyExecutionScope.HasKey((e) => e.StudyExecutionIdentifier);
+
+      //////////////////////////////////////////////////////////////////////////////////////
+      // VisitBillingRecord
+      //////////////////////////////////////////////////////////////////////////////////////
+
+      var cfgVisitBillingRecord = modelBuilder.Entity<VisitBillingRecordEntity>();
+      cfgVisitBillingRecord.ToTable("BdrVisitBillingRecords");
+      cfgVisitBillingRecord.HasKey((e) => e.BillingRecordId);
+      cfgVisitBillingRecord.Property((e) => e.BillingRecordId).UseIdentityColumn();
+
+      // LOOKUP: >>> BillableVisit
+      cfgVisitBillingRecord
+        .HasOne((lcl) => lcl.BillableVisit )
+        .WithMany((rem) => rem.BillingRecord )
+        .HasForeignKey(nameof(VisitBillingRecordEntity.VisitGuid))
+        .OnDelete(DeleteBehavior.Restrict);
+
+      // LOOKUP: >>> BillingDemand
+      cfgVisitBillingRecord
+        .HasOne((lcl) => lcl.AssignedDemand )
+        .WithMany((rem) => rem.BillingRecords )
+        .HasForeignKey(nameof(VisitBillingRecordEntity.BillingDemandId))
+        .OnDelete(DeleteBehavior.Restrict);
+
+      // LOOKUP: >>> Invoice
+      cfgVisitBillingRecord
+        .HasOne((lcl) => lcl.AssignedInvoice )
+        .WithMany((rem) => rem.BillingRecord )
+        .HasForeignKey(nameof(VisitBillingRecordEntity.InvoiceId))
+        .OnDelete(DeleteBehavior.Restrict);
 
       //////////////////////////////////////////////////////////////////////////////////////
       // BillingDemand
@@ -107,6 +109,13 @@ namespace MedicalResearch.BillingData.Persistence.EF {
         .WithMany((rem) => rem.Invoices )
         .HasForeignKey(nameof(InvoiceEntity.StudyExecutionIdentifier))
         .OnDelete(DeleteBehavior.Cascade);
+
+      // LOOKUP: >>> Invoice
+      cfgInvoice
+        .HasOne((lcl) => lcl.CorrectionOf )
+        .WithMany((rem) => rem.Corrections )
+        .HasForeignKey(nameof(InvoiceEntity.CorrectionOfInvoiceId))
+        .OnDelete(DeleteBehavior.Restrict);
 
 #endregion
 

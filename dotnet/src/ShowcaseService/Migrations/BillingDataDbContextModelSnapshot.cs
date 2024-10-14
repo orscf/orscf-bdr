@@ -25,60 +25,24 @@ namespace MedicalResearch.BillingData.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("MedicalResearch.BillingData.Persistence.BillableTaskEntity", b =>
-                {
-                    b.Property<Guid>("TaskGuid")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("TaskExecutionTitle")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TaskName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("VisitGuid")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("TaskGuid");
-
-                    b.HasIndex("VisitGuid");
-
-                    b.ToTable("BdrBillableTasks", (string)null);
-                });
-
             modelBuilder.Entity("MedicalResearch.BillingData.Persistence.BillableVisitEntity", b =>
                 {
                     b.Property<Guid>("VisitGuid")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("BillingDemandId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<DateTime?>("ExecutionEndDateUtc")
                         .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("ExecutorValidationDateUtc")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("InvoiceId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ParticipantIdentifier")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<DateTime?>("SponsorValidationDateUtc")
-                        .HasColumnType("datetime2");
-
                     b.Property<Guid>("StudyExecutionIdentifier")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("VisitExecutionTitle")
+                    b.Property<string>("UniqueExecutionName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -87,10 +51,6 @@ namespace MedicalResearch.BillingData.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("VisitGuid");
-
-                    b.HasIndex("BillingDemandId");
-
-                    b.HasIndex("InvoiceId");
 
                     b.HasIndex("StudyExecutionIdentifier");
 
@@ -133,6 +93,9 @@ namespace MedicalResearch.BillingData.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("CorrectionOfInvoiceId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("CreatedByPerson")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -161,6 +124,8 @@ namespace MedicalResearch.BillingData.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CorrectionOfInvoiceId");
+
                     b.HasIndex("StudyExecutionIdentifier");
 
                     b.ToTable("BdrInvoices", (string)null);
@@ -179,6 +144,13 @@ namespace MedicalResearch.BillingData.Migrations
                     b.Property<string>("ExtendedMetaData")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("SiteRelatedCurrency")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("SiteRelatedTaxPercentage")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<string>("StudyWorkflowName")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -194,38 +166,66 @@ namespace MedicalResearch.BillingData.Migrations
                     b.ToTable("BdrStudyExecutionScopes", (string)null);
                 });
 
-            modelBuilder.Entity("MedicalResearch.BillingData.Persistence.BillableTaskEntity", b =>
+            modelBuilder.Entity("MedicalResearch.BillingData.Persistence.VisitBillingRecordEntity", b =>
                 {
-                    b.HasOne("MedicalResearch.BillingData.Persistence.BillableVisitEntity", "BillableVisit")
-                        .WithMany("BillableTasks")
-                        .HasForeignKey("VisitGuid")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<long>("BillingRecordId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
 
-                    b.Navigation("BillableVisit");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("BillingRecordId"));
+
+                    b.Property<Guid?>("BillingDemandId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreationDateUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("ExecutorValidationDateUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("FixedExecutionState")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("FixedPriceOfTasks")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("FixedPriceOfVisit")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("FixedTaxPercentage")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<Guid?>("InvoiceId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("SponsorValidationDateUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("TasksRelatedInfo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("VisitGuid")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("BillingRecordId");
+
+                    b.HasIndex("BillingDemandId");
+
+                    b.HasIndex("InvoiceId");
+
+                    b.HasIndex("VisitGuid");
+
+                    b.ToTable("BdrVisitBillingRecords", (string)null);
                 });
 
             modelBuilder.Entity("MedicalResearch.BillingData.Persistence.BillableVisitEntity", b =>
                 {
-                    b.HasOne("MedicalResearch.BillingData.Persistence.BillingDemandEntity", "AssignedBillingDemand")
-                        .WithMany("AssignedVisits")
-                        .HasForeignKey("BillingDemandId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("MedicalResearch.BillingData.Persistence.InvoiceEntity", "AssignedInvoice")
-                        .WithMany("AssignedVisits")
-                        .HasForeignKey("InvoiceId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
                     b.HasOne("MedicalResearch.BillingData.Persistence.StudyExecutionScopeEntity", "StudyExecution")
                         .WithMany("BillableVisits")
                         .HasForeignKey("StudyExecutionIdentifier")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("AssignedBillingDemand");
-
-                    b.Navigation("AssignedInvoice");
 
                     b.Navigation("StudyExecution");
                 });
@@ -243,28 +243,62 @@ namespace MedicalResearch.BillingData.Migrations
 
             modelBuilder.Entity("MedicalResearch.BillingData.Persistence.InvoiceEntity", b =>
                 {
+                    b.HasOne("MedicalResearch.BillingData.Persistence.InvoiceEntity", "CorrectionOf")
+                        .WithMany("Corrections")
+                        .HasForeignKey("CorrectionOfInvoiceId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("MedicalResearch.BillingData.Persistence.StudyExecutionScopeEntity", "StudyExecution")
                         .WithMany("Invoices")
                         .HasForeignKey("StudyExecutionIdentifier")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("CorrectionOf");
+
                     b.Navigation("StudyExecution");
+                });
+
+            modelBuilder.Entity("MedicalResearch.BillingData.Persistence.VisitBillingRecordEntity", b =>
+                {
+                    b.HasOne("MedicalResearch.BillingData.Persistence.BillingDemandEntity", "AssignedDemand")
+                        .WithMany("BillingRecords")
+                        .HasForeignKey("BillingDemandId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("MedicalResearch.BillingData.Persistence.InvoiceEntity", "AssignedInvoice")
+                        .WithMany("BillingRecord")
+                        .HasForeignKey("InvoiceId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("MedicalResearch.BillingData.Persistence.BillableVisitEntity", "BillableVisit")
+                        .WithMany("BillingRecord")
+                        .HasForeignKey("VisitGuid")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("AssignedDemand");
+
+                    b.Navigation("AssignedInvoice");
+
+                    b.Navigation("BillableVisit");
                 });
 
             modelBuilder.Entity("MedicalResearch.BillingData.Persistence.BillableVisitEntity", b =>
                 {
-                    b.Navigation("BillableTasks");
+                    b.Navigation("BillingRecord");
                 });
 
             modelBuilder.Entity("MedicalResearch.BillingData.Persistence.BillingDemandEntity", b =>
                 {
-                    b.Navigation("AssignedVisits");
+                    b.Navigation("BillingRecords");
                 });
 
             modelBuilder.Entity("MedicalResearch.BillingData.Persistence.InvoiceEntity", b =>
                 {
-                    b.Navigation("AssignedVisits");
+                    b.Navigation("BillingRecord");
+
+                    b.Navigation("Corrections");
                 });
 
             modelBuilder.Entity("MedicalResearch.BillingData.Persistence.StudyExecutionScopeEntity", b =>

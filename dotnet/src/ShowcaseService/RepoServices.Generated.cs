@@ -6,21 +6,6 @@ using System.Data.Fuse.Ef;
 
 namespace MedicalResearch.BillingData.StoreAccess {
 
-  /// <summary> Provides CRUD access to stored BillableTasks (based on schema version '1.5.0') </summary>
-  public class BillableTaskStore : ModelVsEntityRepository<BillableTask, MedicalResearch.BillingData.Persistence.BillableTaskEntity, Guid>, IBillableTaskStore {
-
-    private static EfRepository<MedicalResearch.BillingData.Persistence.BillableTaskEntity, Guid> CreateInnerEfRepo() {
-      var context = new MedicalResearch.BillingData.Persistence.EF.BillingDataDbContext();
-      return new EfRepository<MedicalResearch.BillingData.Persistence.BillableTaskEntity, Guid>(context);
-    }
-
-    public BillableTaskStore() : base(
-      CreateInnerEfRepo(), new ModelVsEntityParams<BillableTask, MedicalResearch.BillingData.Persistence.BillableTaskEntity>()
-    ) {
-    }
-
-  }
-
   /// <summary> Provides CRUD access to stored BillableVisits (based on schema version '1.5.0') </summary>
   public class BillableVisitStore : ModelVsEntityRepository<BillableVisit, MedicalResearch.BillingData.Persistence.BillableVisitEntity, Guid>, IBillableVisitStore {
 
@@ -46,6 +31,21 @@ namespace MedicalResearch.BillingData.StoreAccess {
 
     public StudyExecutionScopeStore() : base(
       CreateInnerEfRepo(), new ModelVsEntityParams<StudyExecutionScope, MedicalResearch.BillingData.Persistence.StudyExecutionScopeEntity>()
+    ) {
+    }
+
+  }
+
+  /// <summary> Provides CRUD access to stored VisitBillingRecords (based on schema version '1.5.0') </summary>
+  public class VisitBillingRecordStore : ModelVsEntityRepository<VisitBillingRecord, MedicalResearch.BillingData.Persistence.VisitBillingRecordEntity, Int64>, IVisitBillingRecordStore {
+
+    private static EfRepository<MedicalResearch.BillingData.Persistence.VisitBillingRecordEntity, Int64> CreateInnerEfRepo() {
+      var context = new MedicalResearch.BillingData.Persistence.EF.BillingDataDbContext();
+      return new EfRepository<MedicalResearch.BillingData.Persistence.VisitBillingRecordEntity, Int64>(context);
+    }
+
+    public VisitBillingRecordStore() : base(
+      CreateInnerEfRepo(), new ModelVsEntityParams<VisitBillingRecord, MedicalResearch.BillingData.Persistence.VisitBillingRecordEntity>()
     ) {
     }
 

@@ -19,11 +19,35 @@ namespace MedicalResearch.BillingData.Migrations
                     ExecutingInstituteIdentifier = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     StudyWorkflowName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     StudyWorkflowVersion = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    ExtendedMetaData = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    ExtendedMetaData = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SiteRelatedTaxPercentage = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    SiteRelatedCurrency = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_BdrStudyExecutionScopes", x => x.StudyExecutionIdentifier);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "BdrBillableVisits",
+                columns: table => new
+                {
+                    VisitGuid = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    StudyExecutionIdentifier = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ParticipantIdentifier = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    VisitProcedureName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UniqueExecutionName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ExecutionEndDateUtc = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BdrBillableVisits", x => x.VisitGuid);
+                    table.ForeignKey(
+                        name: "FK_BdrBillableVisits_BdrStudyExecutionScopes_StudyExecutionIdentifier",
+                        column: x => x.StudyExecutionIdentifier,
+                        principalTable: "BdrStudyExecutionScopes",
+                        principalColumn: "StudyExecutionIdentifier",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -60,11 +84,18 @@ namespace MedicalResearch.BillingData.Migrations
                     CreationDateUtc = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedByPerson = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PaymentSubmittedDateUtc = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    PaymentReceivedDateUtc = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    PaymentReceivedDateUtc = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CorrectionOfInvoiceId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_BdrInvoices", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_BdrInvoices_BdrInvoices_CorrectionOfInvoiceId",
+                        column: x => x.CorrectionOfInvoiceId,
+                        principalTable: "BdrInvoices",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_BdrInvoices_BdrStudyExecutionScopes_StudyExecutionIdentifier",
                         column: x => x.StudyExecutionIdentifier,
@@ -74,77 +105,45 @@ namespace MedicalResearch.BillingData.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "BdrBillableVisits",
+                name: "BdrVisitBillingRecords",
                 columns: table => new
                 {
+                    BillingRecordId = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     VisitGuid = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    StudyExecutionIdentifier = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ParticipantIdentifier = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    VisitProcedureName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    VisitExecutionTitle = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreationDateUtc = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    SponsorValidationDateUtc = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ExecutorValidationDateUtc = table.Column<DateTime>(type: "datetime2", nullable: true),
                     BillingDemandId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     InvoiceId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    ExecutionEndDateUtc = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    SponsorValidationDateUtc = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    ExecutorValidationDateUtc = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    FixedExecutionState = table.Column<int>(type: "int", nullable: false),
+                    FixedPriceOfVisit = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    FixedPriceOfTasks = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    FixedTaxPercentage = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    TasksRelatedInfo = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_BdrBillableVisits", x => x.VisitGuid);
+                    table.PrimaryKey("PK_BdrVisitBillingRecords", x => x.BillingRecordId);
                     table.ForeignKey(
-                        name: "FK_BdrBillableVisits_BdrBillingDemands_BillingDemandId",
+                        name: "FK_BdrVisitBillingRecords_BdrBillableVisits_VisitGuid",
+                        column: x => x.VisitGuid,
+                        principalTable: "BdrBillableVisits",
+                        principalColumn: "VisitGuid",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_BdrVisitBillingRecords_BdrBillingDemands_BillingDemandId",
                         column: x => x.BillingDemandId,
                         principalTable: "BdrBillingDemands",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_BdrBillableVisits_BdrInvoices_InvoiceId",
+                        name: "FK_BdrVisitBillingRecords_BdrInvoices_InvoiceId",
                         column: x => x.InvoiceId,
                         principalTable: "BdrInvoices",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_BdrBillableVisits_BdrStudyExecutionScopes_StudyExecutionIdentifier",
-                        column: x => x.StudyExecutionIdentifier,
-                        principalTable: "BdrStudyExecutionScopes",
-                        principalColumn: "StudyExecutionIdentifier",
-                        onDelete: ReferentialAction.Cascade);
                 });
-
-            migrationBuilder.CreateTable(
-                name: "BdrBillableTasks",
-                columns: table => new
-                {
-                    TaskGuid = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    VisitGuid = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    TaskName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TaskExecutionTitle = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_BdrBillableTasks", x => x.TaskGuid);
-                    table.ForeignKey(
-                        name: "FK_BdrBillableTasks_BdrBillableVisits_VisitGuid",
-                        column: x => x.VisitGuid,
-                        principalTable: "BdrBillableVisits",
-                        principalColumn: "VisitGuid",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_BdrBillableTasks_VisitGuid",
-                table: "BdrBillableTasks",
-                column: "VisitGuid");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_BdrBillableVisits_BillingDemandId",
-                table: "BdrBillableVisits",
-                column: "BillingDemandId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_BdrBillableVisits_InvoiceId",
-                table: "BdrBillableVisits",
-                column: "InvoiceId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_BdrBillableVisits_StudyExecutionIdentifier",
@@ -157,16 +156,36 @@ namespace MedicalResearch.BillingData.Migrations
                 column: "StudyExecutionIdentifier");
 
             migrationBuilder.CreateIndex(
+                name: "IX_BdrInvoices_CorrectionOfInvoiceId",
+                table: "BdrInvoices",
+                column: "CorrectionOfInvoiceId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_BdrInvoices_StudyExecutionIdentifier",
                 table: "BdrInvoices",
                 column: "StudyExecutionIdentifier");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BdrVisitBillingRecords_BillingDemandId",
+                table: "BdrVisitBillingRecords",
+                column: "BillingDemandId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BdrVisitBillingRecords_InvoiceId",
+                table: "BdrVisitBillingRecords",
+                column: "InvoiceId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BdrVisitBillingRecords_VisitGuid",
+                table: "BdrVisitBillingRecords",
+                column: "VisitGuid");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "BdrBillableTasks");
+                name: "BdrVisitBillingRecords");
 
             migrationBuilder.DropTable(
                 name: "BdrBillableVisits");
