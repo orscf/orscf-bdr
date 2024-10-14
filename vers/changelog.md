@@ -7,7 +7,13 @@ This files contains a version history including all changes relevant for semanti
 
 ## Upcoming Changes
 
-* modified contract for upcomming billing usecases
+*(none)*
+
+
+
+## v 2.0.1
+released **2024-10-14**, including:
+ - modified contract for upcomming billing usecases
 
 
 
