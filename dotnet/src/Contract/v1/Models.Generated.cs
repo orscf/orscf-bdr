@@ -5,7 +5,9 @@ using System.Collections.Generic;
 
 namespace MedicalResearch.BillingData.Model {
 
-public class BillableVisit {
+  [PrimaryIdentity(nameof(VisitGuid))]
+  [PropertyGroup(nameof(VisitGuid), nameof(VisitGuid))]
+  public class BillableVisit {
 
   /// <summary> a global unique id of a concrete study-visit execution which is usually originated at the primary CRF or study management system ('SMS') </summary>
   [Required]
@@ -24,15 +26,15 @@ public class BillableVisit {
   public String VisitProcedureName { get; set; }
 
   /// <summary> title of the visit execution as defined in the 'StudyWorkflowDefinition' (originated from the sponsor) </summary>
-  [Required]
+  [Required, IdentityLabel]
   public String UniqueExecutionName { get; set; }
 
   /// <summary> *this field is optional </summary>
   public Nullable<DateTime> ExecutionEndDateUtc { get; set; }
 
 }
-
-public class StudyExecutionScope {
+   
+  public class StudyExecutionScope {
 
   /// <summary> a global unique id of a concrete study execution (dedicated to a concrete institute) which is usually originated at the primary CRF or study management system ('SMS') </summary>
   [FixedAfterCreation, Required]
@@ -62,8 +64,16 @@ public class StudyExecutionScope {
 
 }
 
-/// <summary> Respresents a Snapshot, containig al the values, which are required to be fixed in relation to a concrete invoice or demand </summary>
-public class VisitBillingRecord {
+  /// <summary> Respresents a Snapshot, containig al the values, which are required to be fixed in relation to a concrete invoice or demand </summary>
+  [PrimaryIdentity(nameof(BillingRecordId))]
+  [PropertyGroup(nameof(BillingRecordId), nameof(BillingRecordId))]
+  [PropertyGroup(nameof(VisitGuid), nameof(VisitGuid))]
+  [HasPrincipal("", nameof(VisitGuid), "", null, nameof(BillableVisit))]
+  [PropertyGroup(nameof(BillingDemandId), nameof(BillingDemandId))]
+  [HasLookup("", nameof(BillingDemandId), "", null, nameof(BillingDemand))]
+  [PropertyGroup(nameof(InvoiceId), nameof(InvoiceId))]
+  [HasLookup("", nameof(InvoiceId), "", null, nameof(Invoice))]
+  public class VisitBillingRecord {
 
   [Required]
   public Int64 BillingRecordId { get; set; }
@@ -103,13 +113,15 @@ public class VisitBillingRecord {
 
 }
 
-/// <summary> created by the sponsor </summary>
-public class BillingDemand {
+  /// <summary> created by the sponsor </summary>
+  [PrimaryIdentity(nameof(Id))]
+  [PropertyGroup(nameof(Id), nameof(Id))]
+  public class BillingDemand {
 
   [Required]
   public Guid Id { get; set; } = Guid.NewGuid();
 
-  [Required]
+  [Required, IdentityLabel]
   public String OfficialNumber { get; set; }
 
   [Required]
@@ -126,14 +138,16 @@ public class BillingDemand {
 
 }
 
-/// <summary> created by the executor-company </summary>
-public class Invoice {
+  /// <summary> created by the executor-company </summary>
+  [PrimaryIdentity(nameof(Id))]
+  [PropertyGroup(nameof(Id), nameof(Id))]
+  public class Invoice {
 
   [FixedAfterCreation, Required]
   public Guid Id { get; set; } = Guid.NewGuid();
 
   /// <summary> the invoice number </summary>
-  [FixedAfterCreation, Required]
+  [FixedAfterCreation, Required, IdentityLabel]
   public String OfficialNumber { get; set; }
 
   [FixedAfterCreation, Required]

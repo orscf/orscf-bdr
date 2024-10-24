@@ -6,7 +6,9 @@ using MedicalResearch.BillingData.Model;
 
 namespace MedicalResearch.BillingData.Persistence {
 
-public class BillableVisitEntity {
+  [PrimaryIdentity(nameof(VisitGuid))]
+  [PropertyGroup(nameof(VisitGuid), nameof(VisitGuid))]
+  public class BillableVisitEntity {
 
   /// <summary> a global unique id of a concrete study-visit execution which is usually originated at the primary CRF or study management system ('SMS') </summary>
   [Required]
@@ -194,8 +196,16 @@ public class StudyExecutionScopeEntity {
 
 }
 
-/// <summary> Respresents a Snapshot, containig al the values, which are required to be fixed in relation to a concrete invoice or demand </summary>
-public class VisitBillingRecordEntity {
+  /// <summary> Respresents a Snapshot, containig al the values, which are required to be fixed in relation to a concrete invoice or demand </summary>
+  [PrimaryIdentity(nameof(BillingRecordId))]
+  [PropertyGroup(nameof(BillingRecordId), nameof(BillingRecordId))]
+  [PropertyGroup(nameof(VisitGuid), nameof(VisitGuid))]
+  [HasPrincipal("", nameof(VisitGuid), "", null, nameof(BillableVisitEntity))]
+  [PropertyGroup(nameof(BillingDemandId), nameof(BillingDemandId))]
+  [HasLookup("", nameof(BillingDemandId), "", null, nameof(BillingDemandEntity))]
+  [PropertyGroup(nameof(InvoiceId), nameof(InvoiceId))]
+  [HasLookup("", nameof(InvoiceId), "", null, nameof(InvoiceEntity))]
+  public class VisitBillingRecordEntity {
 
   [Required]
   public Int64 BillingRecordId { get; set; }
@@ -308,8 +318,10 @@ public class VisitBillingRecordEntity {
 
 }
 
-/// <summary> created by the sponsor </summary>
-public class BillingDemandEntity {
+  /// <summary> created by the sponsor </summary>
+  [PrimaryIdentity(nameof(Id))]
+  [PropertyGroup(nameof(Id), nameof(Id))]
+  public class BillingDemandEntity {
 
   [Required]
   public Guid Id { get; set; } = Guid.NewGuid();
@@ -377,8 +389,10 @@ public class BillingDemandEntity {
 
 }
 
-/// <summary> created by the executor-company </summary>
-public class InvoiceEntity {
+  /// <summary> created by the executor-company </summary>
+  [PrimaryIdentity(nameof(Id))]
+  [PropertyGroup(nameof(Id), nameof(Id))]
+  public class InvoiceEntity {
 
   [FixedAfterCreation, Required]
   public Guid Id { get; set; } = Guid.NewGuid();
