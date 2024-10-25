@@ -33,11 +33,13 @@ namespace MedicalResearch.BillingData.Model {
   public Nullable<DateTime> ExecutionEndDateUtc { get; set; }
 
 }
-   
+
+  [PrimaryIdentity(nameof(StudyExecutionIdentifier))]
+  [PropertyGroup(nameof(StudyExecutionIdentifier), nameof(StudyExecutionIdentifier))]
   public class StudyExecutionScope {
 
   /// <summary> a global unique id of a concrete study execution (dedicated to a concrete institute) which is usually originated at the primary CRF or study management system ('SMS') </summary>
-  [FixedAfterCreation, Required]
+  [FixedAfterCreation, Required, IdentityLabel]
   public Guid StudyExecutionIdentifier { get; set; } = Guid.NewGuid();
 
   /// <summary> the institute which is executing the study (this should be an invariant technical representation of the company name or a guid) </summary>
