@@ -1,8 +1,10 @@
 using MedicalResearch.BillingData.Model;
+using MedicalResearch.BillingData.Persistence.EF;
 using System;
 using System.Data.Fuse;
 using System.Data.Fuse.Convenience;
 using System.Data.Fuse.Ef;
+using System.Data.Fuse.Ef.InstanceManagement;
 
 namespace MedicalResearch.BillingData.StoreAccess {
 
@@ -10,8 +12,10 @@ namespace MedicalResearch.BillingData.StoreAccess {
   public class BillableVisitStore : ModelVsEntityRepository<BillableVisit, MedicalResearch.BillingData.Persistence.BillableVisitEntity, Guid>, IBillableVisitStore {
 
     private static EfRepository<MedicalResearch.BillingData.Persistence.BillableVisitEntity, Guid> CreateInnerEfRepo() {
-      var context = new MedicalResearch.BillingData.Persistence.EF.BillingDataDbContext();
-      return new EfRepository<MedicalResearch.BillingData.Persistence.BillableVisitEntity, Guid>(context);
+      IDbContextInstanceProvider dbContextProvider = new ShortLivingDbContextInstanceProvider(
+        () => new BillingDataDbContext()
+      );
+      return new EfRepository<MedicalResearch.BillingData.Persistence.BillableVisitEntity, Guid>(dbContextProvider);
     }
 
     public BillableVisitStore() : base(
@@ -25,8 +29,10 @@ namespace MedicalResearch.BillingData.StoreAccess {
   public class StudyExecutionScopeStore : ModelVsEntityRepository<StudyExecutionScope, MedicalResearch.BillingData.Persistence.StudyExecutionScopeEntity, Guid>, IStudyExecutionScopeStore {
 
     private static EfRepository<MedicalResearch.BillingData.Persistence.StudyExecutionScopeEntity, Guid> CreateInnerEfRepo() {
-      var context = new MedicalResearch.BillingData.Persistence.EF.BillingDataDbContext();
-      return new EfRepository<MedicalResearch.BillingData.Persistence.StudyExecutionScopeEntity, Guid>(context);
+      IDbContextInstanceProvider dbContextProvider = new ShortLivingDbContextInstanceProvider(
+        () => new BillingDataDbContext()
+      );
+      return new EfRepository<MedicalResearch.BillingData.Persistence.StudyExecutionScopeEntity, Guid>(dbContextProvider);
     }
 
     public StudyExecutionScopeStore() : base(
@@ -40,8 +46,10 @@ namespace MedicalResearch.BillingData.StoreAccess {
   public class VisitBillingRecordStore : ModelVsEntityRepository<VisitBillingRecord, MedicalResearch.BillingData.Persistence.VisitBillingRecordEntity, Int64>, IVisitBillingRecordStore {
 
     private static EfRepository<MedicalResearch.BillingData.Persistence.VisitBillingRecordEntity, Int64> CreateInnerEfRepo() {
-      var context = new MedicalResearch.BillingData.Persistence.EF.BillingDataDbContext();
-      return new EfRepository<MedicalResearch.BillingData.Persistence.VisitBillingRecordEntity, Int64>(context);
+      IDbContextInstanceProvider dbContextProvider = new ShortLivingDbContextInstanceProvider(
+        () => new BillingDataDbContext()
+      );
+      return new EfRepository<MedicalResearch.BillingData.Persistence.VisitBillingRecordEntity, Int64>(dbContextProvider);
     }
 
     public VisitBillingRecordStore() : base(
@@ -55,8 +63,10 @@ namespace MedicalResearch.BillingData.StoreAccess {
   public class BillingDemandStore : ModelVsEntityRepository<BillingDemand, MedicalResearch.BillingData.Persistence.BillingDemandEntity, Guid>, IBillingDemandStore {
 
     private static EfRepository<MedicalResearch.BillingData.Persistence.BillingDemandEntity, Guid> CreateInnerEfRepo() {
-      var context = new MedicalResearch.BillingData.Persistence.EF.BillingDataDbContext();
-      return new EfRepository<MedicalResearch.BillingData.Persistence.BillingDemandEntity, Guid>(context);
+      IDbContextInstanceProvider dbContextProvider = new ShortLivingDbContextInstanceProvider(
+        () => new BillingDataDbContext()
+      );
+      return new EfRepository<MedicalResearch.BillingData.Persistence.BillingDemandEntity, Guid>(dbContextProvider);
     }
 
     public BillingDemandStore() : base(
@@ -70,8 +80,10 @@ namespace MedicalResearch.BillingData.StoreAccess {
   public class InvoiceStore : ModelVsEntityRepository<Invoice, MedicalResearch.BillingData.Persistence.InvoiceEntity, Guid>, IInvoiceStore {
 
     private static EfRepository<MedicalResearch.BillingData.Persistence.InvoiceEntity, Guid> CreateInnerEfRepo() {
-      var context = new MedicalResearch.BillingData.Persistence.EF.BillingDataDbContext();
-      return new EfRepository<MedicalResearch.BillingData.Persistence.InvoiceEntity, Guid>(context);
+      IDbContextInstanceProvider dbContextProvider = new ShortLivingDbContextInstanceProvider(
+        () => new BillingDataDbContext()
+      );
+      return new EfRepository<MedicalResearch.BillingData.Persistence.InvoiceEntity, Guid>(dbContextProvider);
     }
 
     public InvoiceStore() : base(

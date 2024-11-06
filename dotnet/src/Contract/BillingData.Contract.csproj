@@ -28,7 +28,7 @@
 
   <ItemGroup>
     <PackageReference Include="FUSE-fx.EntityAnnotations" Version="4.0.3" />
-    <PackageReference Include="FUSE-fx.RepositoryContract" Version="0.4.5" />
+    <PackageReference Include="FUSE-fx.RepositoryContract" Version="0.4.7" />
     <PackageReference Include="Hl7.Fhir.R4" Version="5.5.1" />
   </ItemGroup>
 
