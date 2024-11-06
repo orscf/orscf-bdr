@@ -78,7 +78,7 @@ namespace MedicalResearch.BillingData.Persistence.EF {
         .HasOne((lcl) => lcl.AssignedInvoice )
         .WithMany((rem) => rem.BillingRecord )
         .HasForeignKey(nameof(VisitBillingRecordEntity.InvoiceId))
-        .OnDelete(DeleteBehavior.Restrict);
+        .OnDelete(DeleteBehavior.SetNull);
 
       //////////////////////////////////////////////////////////////////////////////////////
       // BillingDemand
