@@ -43,10 +43,10 @@
     </PackageReference>
     <PackageReference Include="SmartAmbience" Version="2.1.1" />
     <PackageReference Include="SmartStandards.Essentials" Version="0.5.1" />
-    <PackageReference Include="SmartStandards.Logging" Version="1.2.2" />
+    <PackageReference Include="SmartStandards.Logging" Version="1.2.3" />
     <PackageReference Include="Snowflake44" Version="3.1.0" />
     <PackageReference Include="System.Linq.Dynamic.Core" Version="1.4.5" />
-    <PackageReference Include="UJMW.DynamicClient" Version="3.3.0" />
+    <PackageReference Include="UJMW.DynamicClient" Version="3.3.1" />
   </ItemGroup>
 
   <ItemGroup>

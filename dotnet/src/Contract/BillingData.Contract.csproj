@@ -8,6 +8,7 @@
     <Authors>ORSCF.org</Authors>
     <Copyright>ORSCF.org</Copyright>
     <Product>Open Research Study Communication Format</Product>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -33,13 +34,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="v1\BdrServices.md">
-      <DependentUpon>BdrServices.tt</DependentUpon>
+    <None Update="ApiV2.md">
+      <DependentUpon>ApiV2.tt</DependentUpon>
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </None>
-    <None Update="v1\BdrServices.tt">
-      <LastGenOutput>BdrServices.md</LastGenOutput>
+    <None Update="ApiV2.tt">
+      <LastGenOutput>ApiV2.md</LastGenOutput>
       <Generator>TextTemplatingFileGenerator</Generator>
     </None>
     <None Update="v1\Models.tt">
@@ -68,5 +69,16 @@
       <DependentUpon>RepoInterfaces.tt</DependentUpon>
     </Compile>
   </ItemGroup>
-
+  
+  <!-- https://stackoverflow.com/questions/57412190/how-to-include-xml-documentation-from-nuget-package-in-csproj-build-output -->
+  <Target Name="_ResolveCopyLocalNuGetPkgXmls" AfterTargets="ResolveReferences">
+    <ItemGroup><!-- Copy XML files from all PackageReferences to output dir -->
+      <ReferenceCopyLocalPaths Include="@(ReferenceCopyLocalPaths->'%(RootDir)%(Directory)%(Filename).xml')" Condition="'%(ReferenceCopyLocalPaths.NuGetPackageId)'!='' and Exists('%(RootDir)%(Directory)%(Filename).xml')" />
+    </ItemGroup>
+  </Target>
+  
+  <Target Name="CopyDocs" AfterTargets="Build">
+    <Copy SourceFiles="$(ProjectDir)\ApiV2.md" DestinationFiles="$(ProjectDir)\..\..\..\doc\ApiV2.md" />
+  </Target> 
+  
 </Project>

@@ -6,13 +6,11 @@ using MedicalResearch.BillingData.Model;
 
 namespace MedicalResearch.BillingData.Persistence {
 
-  [PrimaryIdentity(nameof(VisitGuid))]
-  [PropertyGroup(nameof(VisitGuid), nameof(VisitGuid))]
-  public class BillableVisitEntity {
+public class BillableItemEntity {
 
   /// <summary> a global unique id of a concrete study-visit execution which is usually originated at the primary CRF or study management system ('SMS') </summary>
   [Required]
-  public Guid VisitGuid { get; set; } = Guid.NewGuid();
+  public Guid BillableItemUid { get; set; } = Guid.NewGuid();
 
   /// <summary> a global unique id of a concrete study execution (dedicated to a concrete institute) which is usually originated at the primary CRF or study management system ('SMS') </summary>
   [Required]
@@ -33,60 +31,70 @@ namespace MedicalResearch.BillingData.Persistence {
   /// <summary> *this field is optional </summary>
   public Nullable<DateTime> ExecutionEndDateUtc { get; set; }
 
+  /// <summary> *this field is optional (use null as value) </summary>
+  public String Description { get; set; }
+
+  /// <summary> One of the following values: 'General' / 'Site' / 'Paticipant' (Requires a ParticipantIdentifier) / 'Visit' (Requires a ParticipantIdentifier and UniqueExecutionName) </summary>
+  [Required]
+  public String RelatedTo { get; set; }
+
   [Principal]
   public virtual StudyExecutionScopeEntity StudyExecution { get; set; }
 
-  [Referrer]
-  public virtual ObservableCollection<VisitBillingRecordEntity> BillingRecord { get; set; } = new ObservableCollection<VisitBillingRecordEntity>();
-
 #region Mapping
 
-  internal static Expression<Func<BillableVisit, BillableVisitEntity>> BillableVisitEntitySelector = ((BillableVisit src) => new BillableVisitEntity {
-    VisitGuid = src.VisitGuid,
+  internal static Expression<Func<BillableItem, BillableItemEntity>> BillableItemEntitySelector = ((BillableItem src) => new BillableItemEntity {
+    BillableItemUid = src.BillableItemUid,
     StudyExecutionIdentifier = src.StudyExecutionIdentifier,
     ParticipantIdentifier = src.ParticipantIdentifier,
     VisitProcedureName = src.VisitProcedureName,
     UniqueExecutionName = src.UniqueExecutionName,
     ExecutionEndDateUtc = src.ExecutionEndDateUtc,
+    Description = src.Description,
+    RelatedTo = src.RelatedTo,
   });
 
-  internal static Expression<Func<BillableVisitEntity, BillableVisit>> BillableVisitSelector = ((BillableVisitEntity src) => new BillableVisit {
-    VisitGuid = src.VisitGuid,
+  internal static Expression<Func<BillableItemEntity, BillableItem>> BillableItemSelector = ((BillableItemEntity src) => new BillableItem {
+    BillableItemUid = src.BillableItemUid,
     StudyExecutionIdentifier = src.StudyExecutionIdentifier,
     ParticipantIdentifier = src.ParticipantIdentifier,
     VisitProcedureName = src.VisitProcedureName,
     UniqueExecutionName = src.UniqueExecutionName,
     ExecutionEndDateUtc = src.ExecutionEndDateUtc,
+    Description = src.Description,
+    RelatedTo = src.RelatedTo,
   });
 
-  internal void CopyContentFrom(BillableVisit source, Func<String,bool> onFixedValueChangingCallback = null){
-    this.VisitGuid = source.VisitGuid;
+  internal void CopyContentFrom(BillableItem source, Func<String,bool> onFixedValueChangingCallback = null){
+    this.BillableItemUid = source.BillableItemUid;
     this.StudyExecutionIdentifier = source.StudyExecutionIdentifier;
     this.ParticipantIdentifier = source.ParticipantIdentifier;
     this.VisitProcedureName = source.VisitProcedureName;
     this.UniqueExecutionName = source.UniqueExecutionName;
     this.ExecutionEndDateUtc = source.ExecutionEndDateUtc;
+    this.Description = source.Description;
+    this.RelatedTo = source.RelatedTo;
   }
 
-  internal void CopyContentTo(BillableVisit target, Func<String,bool> onFixedValueChangingCallback = null){
-    target.VisitGuid = this.VisitGuid;
+  internal void CopyContentTo(BillableItem target, Func<String,bool> onFixedValueChangingCallback = null){
+    target.BillableItemUid = this.BillableItemUid;
     target.StudyExecutionIdentifier = this.StudyExecutionIdentifier;
     target.ParticipantIdentifier = this.ParticipantIdentifier;
     target.VisitProcedureName = this.VisitProcedureName;
     target.UniqueExecutionName = this.UniqueExecutionName;
     target.ExecutionEndDateUtc = this.ExecutionEndDateUtc;
+    target.Description = this.Description;
+    target.RelatedTo = this.RelatedTo;
   }
 
 #endregion
 
 }
 
-  [PrimaryIdentity(nameof(StudyExecutionIdentifier))]
-  [PropertyGroup(nameof(StudyExecutionIdentifier), nameof(StudyExecutionIdentifier))]
-  public class StudyExecutionScopeEntity {
+public class StudyExecutionScopeEntity {
 
   /// <summary> a global unique id of a concrete study execution (dedicated to a concrete institute) which is usually originated at the primary CRF or study management system ('SMS') </summary>
-  [FixedAfterCreation, Required, IdentityLabel]
+  [FixedAfterCreation, Required]
   public Guid StudyExecutionIdentifier { get; set; } = Guid.NewGuid();
 
   /// <summary> the institute which is executing the study (this should be an invariant technical representation of the company name or a guid) </summary>
@@ -110,9 +118,6 @@ namespace MedicalResearch.BillingData.Persistence {
   /// <summary> ISO 3-Letter Code (USD, EUR, ...) </summary>
   [Required]
   public String SiteRelatedCurrency { get; set; }
-
-  [Dependent]
-  public virtual ObservableCollection<BillableVisitEntity> BillableVisits { get; set; } = new ObservableCollection<BillableVisitEntity>();
 
   [Dependent]
   public virtual ObservableCollection<BillingDemandEntity> BillingDemands { get; set; } = new ObservableCollection<BillingDemandEntity>();
@@ -198,132 +203,8 @@ namespace MedicalResearch.BillingData.Persistence {
 
 }
 
-  /// <summary> Respresents a Snapshot, containig al the values, which are required to be fixed in relation to a concrete invoice or demand </summary>
-  [PrimaryIdentity(nameof(BillingRecordId))]
-  [PropertyGroup(nameof(BillingRecordId), nameof(BillingRecordId))]
-  [PropertyGroup(nameof(VisitGuid), nameof(VisitGuid))]
-  [HasPrincipal("", nameof(VisitGuid), "", null, nameof(BillableVisitEntity))]
-  [PropertyGroup(nameof(BillingDemandId), nameof(BillingDemandId))]
-  [HasLookup("", nameof(BillingDemandId), "", null, nameof(BillingDemandEntity))]
-  [PropertyGroup(nameof(InvoiceId), nameof(InvoiceId))]
-  [HasLookup("", nameof(InvoiceId), "", null, nameof(InvoiceEntity))]
-  public class VisitBillingRecordEntity {
-
-  [Required]
-  public Int64 BillingRecordId { get; set; }
-
-  [Required]
-  public Guid VisitGuid { get; set; }
-
-  [Required]
-  public DateTime CreationDateUtc { get; set; }
-
-  /// <summary> *this field is optional </summary>
-  public Nullable<DateTime> SponsorValidationDateUtc { get; set; }
-
-  /// <summary> *this field is optional </summary>
-  public Nullable<DateTime> ExecutorValidationDateUtc { get; set; }
-
-  /// <summary> *this field is optional </summary>
-  public Nullable<Guid> BillingDemandId { get; set; }
-
-  /// <summary> *this field is optional </summary>
-  public Nullable<Guid> InvoiceId { get; set; }
-
-  [Required]
-  public Int32 FixedExecutionState { get; set; }
-
-  [Required]
-  public Decimal FixedPriceOfVisit { get; set; }
-
-  [Required]
-  public Decimal FixedPriceOfTasks { get; set; }
-
-  [Required]
-  public Decimal FixedTaxPercentage { get; set; }
-
-  [Required]
-  public String TasksRelatedInfo { get; set; }
-
-  [Lookup]
-  public virtual BillableVisitEntity BillableVisit { get; set; }
-
-  [Lookup]
-  public virtual BillingDemandEntity AssignedDemand { get; set; }
-
-  [Lookup]
-  public virtual InvoiceEntity AssignedInvoice { get; set; }
-
-#region Mapping
-
-  internal static Expression<Func<VisitBillingRecord, VisitBillingRecordEntity>> VisitBillingRecordEntitySelector = ((VisitBillingRecord src) => new VisitBillingRecordEntity {
-    BillingRecordId = src.BillingRecordId,
-    VisitGuid = src.VisitGuid,
-    CreationDateUtc = src.CreationDateUtc,
-    SponsorValidationDateUtc = src.SponsorValidationDateUtc,
-    ExecutorValidationDateUtc = src.ExecutorValidationDateUtc,
-    BillingDemandId = src.BillingDemandId,
-    InvoiceId = src.InvoiceId,
-    FixedExecutionState = src.FixedExecutionState,
-    FixedPriceOfVisit = src.FixedPriceOfVisit,
-    FixedPriceOfTasks = src.FixedPriceOfTasks,
-    FixedTaxPercentage = src.FixedTaxPercentage,
-    TasksRelatedInfo = src.TasksRelatedInfo,
-  });
-
-  internal static Expression<Func<VisitBillingRecordEntity, VisitBillingRecord>> VisitBillingRecordSelector = ((VisitBillingRecordEntity src) => new VisitBillingRecord {
-    BillingRecordId = src.BillingRecordId,
-    VisitGuid = src.VisitGuid,
-    CreationDateUtc = src.CreationDateUtc,
-    SponsorValidationDateUtc = src.SponsorValidationDateUtc,
-    ExecutorValidationDateUtc = src.ExecutorValidationDateUtc,
-    BillingDemandId = src.BillingDemandId,
-    InvoiceId = src.InvoiceId,
-    FixedExecutionState = src.FixedExecutionState,
-    FixedPriceOfVisit = src.FixedPriceOfVisit,
-    FixedPriceOfTasks = src.FixedPriceOfTasks,
-    FixedTaxPercentage = src.FixedTaxPercentage,
-    TasksRelatedInfo = src.TasksRelatedInfo,
-  });
-
-  internal void CopyContentFrom(VisitBillingRecord source, Func<String,bool> onFixedValueChangingCallback = null){
-    this.BillingRecordId = source.BillingRecordId;
-    this.VisitGuid = source.VisitGuid;
-    this.CreationDateUtc = source.CreationDateUtc;
-    this.SponsorValidationDateUtc = source.SponsorValidationDateUtc;
-    this.ExecutorValidationDateUtc = source.ExecutorValidationDateUtc;
-    this.BillingDemandId = source.BillingDemandId;
-    this.InvoiceId = source.InvoiceId;
-    this.FixedExecutionState = source.FixedExecutionState;
-    this.FixedPriceOfVisit = source.FixedPriceOfVisit;
-    this.FixedPriceOfTasks = source.FixedPriceOfTasks;
-    this.FixedTaxPercentage = source.FixedTaxPercentage;
-    this.TasksRelatedInfo = source.TasksRelatedInfo;
-  }
-
-  internal void CopyContentTo(VisitBillingRecord target, Func<String,bool> onFixedValueChangingCallback = null){
-    target.BillingRecordId = this.BillingRecordId;
-    target.VisitGuid = this.VisitGuid;
-    target.CreationDateUtc = this.CreationDateUtc;
-    target.SponsorValidationDateUtc = this.SponsorValidationDateUtc;
-    target.ExecutorValidationDateUtc = this.ExecutorValidationDateUtc;
-    target.BillingDemandId = this.BillingDemandId;
-    target.InvoiceId = this.InvoiceId;
-    target.FixedExecutionState = this.FixedExecutionState;
-    target.FixedPriceOfVisit = this.FixedPriceOfVisit;
-    target.FixedPriceOfTasks = this.FixedPriceOfTasks;
-    target.FixedTaxPercentage = this.FixedTaxPercentage;
-    target.TasksRelatedInfo = this.TasksRelatedInfo;
-  }
-
-#endregion
-
-}
-
-  /// <summary> created by the sponsor </summary>
-  [PrimaryIdentity(nameof(Id))]
-  [PropertyGroup(nameof(Id), nameof(Id))]
-  public class BillingDemandEntity {
+/// <summary> created by the sponsor </summary>
+public class BillingDemandEntity {
 
   [Required]
   public Guid Id { get; set; } = Guid.NewGuid();
@@ -347,7 +228,7 @@ namespace MedicalResearch.BillingData.Persistence {
   public virtual StudyExecutionScopeEntity StudyExecution { get; set; }
 
   [Referrer]
-  public virtual ObservableCollection<VisitBillingRecordEntity> BillingRecords { get; set; } = new ObservableCollection<VisitBillingRecordEntity>();
+  public virtual ObservableCollection<BillingItemEntity> BillingItems { get; set; } = new ObservableCollection<BillingItemEntity>();
 
 #region Mapping
 
@@ -391,10 +272,131 @@ namespace MedicalResearch.BillingData.Persistence {
 
 }
 
-  /// <summary> created by the executor-company </summary>
-  [PrimaryIdentity(nameof(Id))]
-  [PropertyGroup(nameof(Id), nameof(Id))]
-  public class InvoiceEntity {
+/// <summary> Respresents a Snapshot, containig al the values, which are required to be fixed in relation to a concrete invoice or demand </summary>
+public class BillingItemEntity {
+
+  [Required]
+  public Int64 BillingItemId { get; set; }
+
+  [Required]
+  public DateTime CreationDateUtc { get; set; }
+
+  /// <summary> *this field is optional </summary>
+  public Nullable<DateTime> SponsorValidationDateUtc { get; set; }
+
+  /// <summary> *this field is optional </summary>
+  public Nullable<DateTime> ExecutorValidationDateUtc { get; set; }
+
+  /// <summary> *this field is optional </summary>
+  public Nullable<Guid> BillingDemandId { get; set; }
+
+  /// <summary> *this field is optional </summary>
+  public Nullable<Guid> InvoiceId { get; set; }
+
+  [Required]
+  public Int32 FixedExecutionState { get; set; }
+
+  /// <summary> Including 'FixedPriceOfTasks' but excluding Taxes </summary>
+  [Required]
+  public Decimal FixedPriceOfItem { get; set; }
+
+  /// <summary> An additional info which is only relevant when declaing Subtasks </summary>
+  [Required]
+  public Decimal FixedPriceOfTasks { get; set; }
+
+  [Required]
+  public Decimal FixedTaxPercentage { get; set; }
+
+  [Required]
+  public String TasksRelatedInfo { get; set; }
+
+  /// <summary> *this field is optional </summary>
+  public Nullable<Guid> BillableItemUid { get; set; }
+
+  [Required]
+  public String Description { get; set; }
+
+  [Lookup]
+  public virtual BillingDemandEntity AssignedDemand { get; set; }
+
+  [Lookup]
+  public virtual InvoiceEntity AssignedInvoice { get; set; }
+
+  [Lookup]
+  public virtual BillableItemEntity BillableItem { get; set; }
+
+#region Mapping
+
+  internal static Expression<Func<BillingItem, BillingItemEntity>> BillingItemEntitySelector = ((BillingItem src) => new BillingItemEntity {
+    BillingItemId = src.BillingItemId,
+    CreationDateUtc = src.CreationDateUtc,
+    SponsorValidationDateUtc = src.SponsorValidationDateUtc,
+    ExecutorValidationDateUtc = src.ExecutorValidationDateUtc,
+    BillingDemandId = src.BillingDemandId,
+    InvoiceId = src.InvoiceId,
+    FixedExecutionState = src.FixedExecutionState,
+    FixedPriceOfItem = src.FixedPriceOfItem,
+    FixedPriceOfTasks = src.FixedPriceOfTasks,
+    FixedTaxPercentage = src.FixedTaxPercentage,
+    TasksRelatedInfo = src.TasksRelatedInfo,
+    BillableItemUid = src.BillableItemUid,
+    Description = src.Description,
+  });
+
+  internal static Expression<Func<BillingItemEntity, BillingItem>> BillingItemSelector = ((BillingItemEntity src) => new BillingItem {
+    BillingItemId = src.BillingItemId,
+    CreationDateUtc = src.CreationDateUtc,
+    SponsorValidationDateUtc = src.SponsorValidationDateUtc,
+    ExecutorValidationDateUtc = src.ExecutorValidationDateUtc,
+    BillingDemandId = src.BillingDemandId,
+    InvoiceId = src.InvoiceId,
+    FixedExecutionState = src.FixedExecutionState,
+    FixedPriceOfItem = src.FixedPriceOfItem,
+    FixedPriceOfTasks = src.FixedPriceOfTasks,
+    FixedTaxPercentage = src.FixedTaxPercentage,
+    TasksRelatedInfo = src.TasksRelatedInfo,
+    BillableItemUid = src.BillableItemUid,
+    Description = src.Description,
+  });
+
+  internal void CopyContentFrom(BillingItem source, Func<String,bool> onFixedValueChangingCallback = null){
+    this.BillingItemId = source.BillingItemId;
+    this.CreationDateUtc = source.CreationDateUtc;
+    this.SponsorValidationDateUtc = source.SponsorValidationDateUtc;
+    this.ExecutorValidationDateUtc = source.ExecutorValidationDateUtc;
+    this.BillingDemandId = source.BillingDemandId;
+    this.InvoiceId = source.InvoiceId;
+    this.FixedExecutionState = source.FixedExecutionState;
+    this.FixedPriceOfItem = source.FixedPriceOfItem;
+    this.FixedPriceOfTasks = source.FixedPriceOfTasks;
+    this.FixedTaxPercentage = source.FixedTaxPercentage;
+    this.TasksRelatedInfo = source.TasksRelatedInfo;
+    this.BillableItemUid = source.BillableItemUid;
+    this.Description = source.Description;
+  }
+
+  internal void CopyContentTo(BillingItem target, Func<String,bool> onFixedValueChangingCallback = null){
+    target.BillingItemId = this.BillingItemId;
+    target.CreationDateUtc = this.CreationDateUtc;
+    target.SponsorValidationDateUtc = this.SponsorValidationDateUtc;
+    target.ExecutorValidationDateUtc = this.ExecutorValidationDateUtc;
+    target.BillingDemandId = this.BillingDemandId;
+    target.InvoiceId = this.InvoiceId;
+    target.FixedExecutionState = this.FixedExecutionState;
+    target.FixedPriceOfItem = this.FixedPriceOfItem;
+    target.FixedPriceOfTasks = this.FixedPriceOfTasks;
+    target.FixedTaxPercentage = this.FixedTaxPercentage;
+    target.TasksRelatedInfo = this.TasksRelatedInfo;
+    target.BillableItemUid = this.BillableItemUid;
+    target.Description = this.Description;
+  }
+
+#endregion
+
+}
+
+/// <summary> created by the executor-company </summary>
+public class InvoiceEntity {
 
   [FixedAfterCreation, Required]
   public Guid Id { get; set; } = Guid.NewGuid();
@@ -427,11 +429,11 @@ namespace MedicalResearch.BillingData.Persistence {
   /// <summary> *this field is optional </summary>
   public Nullable<Guid> CorrectionOfInvoiceId { get; set; }
 
+  [Referrer]
+  public virtual ObservableCollection<BillingItemEntity> BillingItems { get; set; } = new ObservableCollection<BillingItemEntity>();
+
   [Principal]
   public virtual StudyExecutionScopeEntity StudyExecution { get; set; }
-
-  [Referrer]
-  public virtual ObservableCollection<VisitBillingRecordEntity> BillingRecord { get; set; } = new ObservableCollection<VisitBillingRecordEntity>();
 
   [Referrer]
   public virtual ObservableCollection<InvoiceEntity> Corrections { get; set; } = new ObservableCollection<InvoiceEntity>();

@@ -19,8 +19,8 @@
          // BASE-SETTINGS /////////////////////////////////////////////////////////////////////
 
            // Source:
-           inputFile = Host.ResolvePath("..\\..\\..\\(Stage)\\Bin\\ORSCF.BillingData.Contract.dll"),
-           interfaceTypeNamePattern = "MedicalResearch.BillingData.I*Service",
+           inputFile = Path.GetFullPath(Host.ResolvePath("..\\..\\dist\\bin-net6.0\\ORSCF.BillingData.Contract.dll")),
+           interfaceTypeNamePattern = "MedicalResearch.BillingData.StoreAccess.I*",
 
            requireXmlDocForNamespaces = new string[] { 
              "MedicalResearch.BillingData"
@@ -34,7 +34,8 @@
            countOfPrefixCharsToRemove = 1,
 
            namespaceWildcardsForModelImport = new string[] { 
-             "MedicalResearch.BillingData.*"
+             "MedicalResearch.BillingData.*",
+             "System.Data.Fuse.*"
            }
 
          //////////////////////////////////////////////////////////////////////////////////////

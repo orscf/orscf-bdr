@@ -16,10 +16,10 @@
           <EntitySet Name="BillingDemands" EntityType="DomainModel.BillingDemand" />
           <EntitySet Name="Invoices" EntityType="DomainModel.Invoice" />
           <EntitySet Name="StudyExecutionScopes" EntityType="DomainModel.StudyExecutionScope" />
-          <EntitySet Name="BillableVisits" EntityType="DomainModel.BillableVisit" />
+          <EntitySet Name="BillableItems" EntityType="DomainModel.BillableItem" />
           <AssociationSet Name="StudyExecutionScopeBillableVisit" Association="DomainModel.StudyExecutionScopeBillableVisit">
             <End Role="StudyExecutionScope" EntitySet="StudyExecutionScopes" />
-            <End Role="BillableVisit" EntitySet="BillableVisits" />
+            <End Role="BillableVisit" EntitySet="BillableItems" />
           </AssociationSet>
           <AssociationSet Name="StudyExecutionScopeBillingDemand" Association="DomainModel.StudyExecutionScopeBillingDemand">
             <End Role="StudyExecutionScope" EntitySet="StudyExecutionScopes" />
@@ -29,22 +29,22 @@
             <End Role="StudyExecutionScope" EntitySet="StudyExecutionScopes" />
             <End Role="Invoice" EntitySet="Invoices" />
           </AssociationSet>
-          <EntitySet Name="VisitBillingRecords" EntityType="DomainModel.VisitBillingRecord" />
-          <AssociationSet Name="BillableVisitBillingRecord" Association="DomainModel.BillableVisitBillingRecord">
-            <End Role="BillableVisit" EntitySet="BillableVisits" />
-            <End Role="BillingRecord" EntitySet="VisitBillingRecords" />
-          </AssociationSet>
+          <EntitySet Name="BillingItems" EntityType="DomainModel.BillingItem" />
           <AssociationSet Name="BillingDemandBillingRecord" Association="DomainModel.BillingDemandBillingRecord">
             <End Role="BillingDemand" EntitySet="BillingDemands" />
-            <End Role="BillingRecord" EntitySet="VisitBillingRecords" />
+            <End Role="BillingRecord" EntitySet="BillingItems" />
           </AssociationSet>
           <AssociationSet Name="InvoiceBillingRecord" Association="DomainModel.InvoiceBillingRecord">
             <End Role="Invoice" EntitySet="Invoices" />
-            <End Role="BillingRecord" EntitySet="VisitBillingRecords" />
+            <End Role="BillingRecord" EntitySet="BillingItems" />
           </AssociationSet>
           <AssociationSet Name="InvoiceInvoice" Association="DomainModel.InvoiceInvoice">
             <End Role="Invoice" EntitySet="Invoices" />
             <End Role="Invoice1" EntitySet="Invoices" />
+          </AssociationSet>
+          <AssociationSet Name="BillableItemBillingItem" Association="DomainModel.BillableItemBillingItem">
+            <End Role="BillableItem" EntitySet="BillableItems" />
+            <End Role="BillingItem" EntitySet="BillingItems" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="BillingDemand">
@@ -61,7 +61,7 @@
           <Property Name="TransmissionDateUtc" Type="DateTime" Nullable="true" />
           <Property Name="CreationDateUtc" Type="DateTime" Nullable="false" />
           <Property Name="CreatedByPerson" Type="String" Nullable="false" />
-          <NavigationProperty Name="BillingRecords" Relationship="DomainModel.BillingDemandBillingRecord" FromRole="BillingDemand" ToRole="BillingRecord" />
+          <NavigationProperty Name="BillingItems" Relationship="DomainModel.BillingDemandBillingRecord" FromRole="BillingDemand" ToRole="BillingRecord" />
         </EntityType>
         <EntityType Name="Invoice">
           <Documentation>
@@ -97,7 +97,7 @@
           <Property Name="CreatedByPerson" Type="String" Nullable="false" />
           <Property Name="PaymentSubmittedDateUtc" Type="DateTime" Nullable="true" />
           <Property Name="PaymentReceivedDateUtc" Type="DateTime" Nullable="true" />
-          <NavigationProperty Name="BillingRecord" Relationship="DomainModel.InvoiceBillingRecord" FromRole="Invoice" ToRole="BillingRecord" />
+          <NavigationProperty Name="BillingItems" Relationship="DomainModel.InvoiceBillingRecord" FromRole="Invoice" ToRole="BillingRecord" />
           <NavigationProperty Name="Corrections" Relationship="DomainModel.InvoiceInvoice" FromRole="Invoice" ToRole="Invoice1" />
           <NavigationProperty Name="CorrectionOf" Relationship="DomainModel.InvoiceInvoice" FromRole="Invoice1" ToRole="Invoice" />
           <Property Name="CorrectionOfInvoiceId" Type="Guid" Nullable="true" />
@@ -135,7 +135,6 @@
               <Summary>optional structure (in JSON-format) containing additional metadata regarding this record, which can be used by 'StudyExecutionSystems' to extend the schema</Summary>
             </Documentation>
           </Property>
-          <NavigationProperty Name="BillableVisits" Relationship="DomainModel.StudyExecutionScopeBillableVisit" FromRole="StudyExecutionScope" ToRole="BillableVisit" />
           <NavigationProperty Name="BillingDemands" Relationship="DomainModel.StudyExecutionScopeBillingDemand" FromRole="StudyExecutionScope" ToRole="BillingDemand" />
           <NavigationProperty Name="Invoices" Relationship="DomainModel.StudyExecutionScopeInvoice" FromRole="StudyExecutionScope" ToRole="Invoice" />
           <Property Name="SiteRelatedTaxPercentage" Type="Decimal" Nullable="false" />
@@ -145,11 +144,11 @@
             </Documentation>
           </Property>
         </EntityType>
-        <EntityType Name="BillableVisit">
+        <EntityType Name="BillableItem">
           <Key>
-            <PropertyRef Name="VisitGuid" />
+            <PropertyRef Name="BillableItemUid" />
           </Key>
-          <Property Name="VisitGuid" Type="Guid" Nullable="false" annotation:StoreGeneratedPattern="None" >
+          <Property Name="BillableItemUid" Type="Guid" Nullable="false" annotation:StoreGeneratedPattern="None" >
             <Documentation>
               <Summary>a global unique id of a concrete study-visit execution which is usually originated at the primary CRF or study management system ('SMS')</Summary>
             </Documentation>
@@ -176,13 +175,18 @@
             </Documentation>
           </Property>
           <Property Name="ExecutionEndDateUtc" Type="DateTime" Nullable="true" />
-          <NavigationProperty Name="BillingRecord" Relationship="DomainModel.BillableVisitBillingRecord" FromRole="BillableVisit" ToRole="BillingRecord" />
+          <Property Name="Description" Type="String" />
+          <Property Name="RelatedTo" Type="String" Nullable="false" >
+            <Documentation>
+              <Summary>One of the following values: 'General' / 'Site' / 'Paticipant' (Requires a ParticipantIdentifier) / 'Visit' (Requires a ParticipantIdentifier and UniqueExecutionName)</Summary>
+            </Documentation>
+          </Property>
         </EntityType>
         <Association Name="StudyExecutionScopeBillableVisit">
           <End Type="DomainModel.StudyExecutionScope" Role="StudyExecutionScope" Multiplicity="1" >
             <OnDelete Action="Cascade" />
           </End>
-          <End Type="DomainModel.BillableVisit" Role="BillableVisit" Multiplicity="*" />
+          <End Type="DomainModel.BillableItem" Role="BillableVisit" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="StudyExecutionScope">
               <PropertyRef Name="StudyExecutionIdentifier" />
@@ -220,16 +224,14 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="VisitBillingRecord">
+        <EntityType Name="BillingItem">
           <Documentation>
             <Summary>Respresents a Snapshot, containig al the values, which are required to be fixed in relation to a concrete invoice or demand</Summary>
           </Documentation>
           <Key>
-            <PropertyRef Name="BillingRecordId" />
+            <PropertyRef Name="BillingItemId" />
           </Key>
-          <Property Name="BillingRecordId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <NavigationProperty Name="BillableVisit" Relationship="DomainModel.BillableVisitBillingRecord" FromRole="BillingRecord" ToRole="BillableVisit" />
-          <Property Name="VisitGuid" Type="Guid" Nullable="false" />
+          <Property Name="BillingItemId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CreationDateUtc" Type="DateTime" Nullable="false" />
           <Property Name="SponsorValidationDateUtc" Type="DateTime" Nullable="true" />
           <Property Name="ExecutorValidationDateUtc" Type="DateTime" Nullable="true" />
@@ -238,26 +240,25 @@
           <NavigationProperty Name="AssignedInvoice" Relationship="DomainModel.InvoiceBillingRecord" FromRole="BillingRecord" ToRole="Invoice" />
           <Property Name="InvoiceId" Type="Guid" Nullable="true" />
           <Property Name="FixedExecutionState" Type="Int32" Nullable="false" />
-          <Property Name="FixedPriceOfVisit" Type="Decimal" Nullable="false" />
-          <Property Name="FixedPriceOfTasks" Type="Decimal" Nullable="false" />
+          <Property Name="FixedPriceOfItem" Type="Decimal" Nullable="false" >
+            <Documentation>
+              <Summary>Including 'FixedPriceOfTasks' but excluding Taxes</Summary>
+            </Documentation>
+          </Property>
+          <Property Name="FixedPriceOfTasks" Type="Decimal" Nullable="false" >
+            <Documentation>
+              <Summary>An additional info which is only relevant when declaing Subtasks</Summary>
+            </Documentation>
+          </Property>
           <Property Name="FixedTaxPercentage" Type="Decimal" Nullable="false" />
           <Property Name="TasksRelatedInfo" Type="String" Nullable="false" />
+          <NavigationProperty Name="BillableItem" Relationship="DomainModel.BillableItemBillingItem" FromRole="BillingItem" ToRole="BillableItem" />
+          <Property Name="BillableItemUid" Type="Guid" Nullable="true" />
+          <Property Name="Description" Type="String" Nullable="false" />
         </EntityType>
-        <Association Name="BillableVisitBillingRecord">
-          <End Type="DomainModel.BillableVisit" Role="BillableVisit" Multiplicity="1" />
-          <End Type="DomainModel.VisitBillingRecord" Role="BillingRecord" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="BillableVisit">
-              <PropertyRef Name="VisitGuid" />
-            </Principal>
-            <Dependent Role="BillingRecord">
-              <PropertyRef Name="VisitGuid" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="BillingDemandBillingRecord">
           <End Type="DomainModel.BillingDemand" Role="BillingDemand" Multiplicity="0..1" />
-          <End Type="DomainModel.VisitBillingRecord" Role="BillingRecord" Multiplicity="*" />
+          <End Type="DomainModel.BillingItem" Role="BillingRecord" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="BillingDemand">
               <PropertyRef Name="Id" />
@@ -269,7 +270,7 @@
         </Association>
         <Association Name="InvoiceBillingRecord">
           <End Type="DomainModel.Invoice" Role="Invoice" Multiplicity="0..1" />
-          <End Type="DomainModel.VisitBillingRecord" Role="BillingRecord" Multiplicity="*" />
+          <End Type="DomainModel.BillingItem" Role="BillingRecord" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Invoice">
               <PropertyRef Name="Id" />
@@ -288,6 +289,18 @@
             </Principal>
             <Dependent Role="Invoice1">
               <PropertyRef Name="CorrectionOfInvoiceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="BillableItemBillingItem">
+          <End Type="DomainModel.BillableItem" Role="BillableItem" Multiplicity="0..1" />
+          <End Type="DomainModel.BillingItem" Role="BillingItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BillableItem">
+              <PropertyRef Name="BillableItemUid" />
+            </Principal>
+            <Dependent Role="BillingItem">
+              <PropertyRef Name="BillableItemUid" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -320,19 +333,19 @@
     </edmx:Options>
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="1e673f0774584ac2be5350aef5de4487" Name="Schema" ZoomLevel="80">
-        <EntityTypeShape EntityType="DomainModel.BillingDemand" Width="2.625" PointX="8.625" PointY="3.25" FillColor="Purple" />
+      <Diagram DiagramId="1e673f0774584ac2be5350aef5de4487" Name="Schema" ZoomLevel="92">
+        <EntityTypeShape EntityType="DomainModel.BillingDemand" Width="2.625" PointX="8.25" PointY="3.25" FillColor="Purple" />
         <EntityTypeShape EntityType="DomainModel.Invoice" Width="2.625" PointX="11.75" PointY="2.875" FillColor="Purple" />
         <EntityTypeShape EntityType="DomainModel.StudyExecutionScope" Width="3" PointX="4" PointY="1.375" FillColor="Purple" />
-        <EntityTypeShape EntityType="DomainModel.BillableVisit" Width="3" PointX="4" PointY="5" FillColor="Purple" />
+        <EntityTypeShape EntityType="DomainModel.BillableItem" Width="3" PointX="4" PointY="5.25" FillColor="Purple" />
         <AssociationConnector Association="DomainModel.StudyExecutionScopeBillableVisit" />
         <AssociationConnector Association="DomainModel.StudyExecutionScopeBillingDemand" />
         <AssociationConnector Association="DomainModel.StudyExecutionScopeInvoice" />
-        <EntityTypeShape EntityType="DomainModel.VisitBillingRecord" Width="2.625" PointX="8.625" PointY="6.375" FillColor="Purple" />
-        <AssociationConnector Association="DomainModel.BillableVisitBillingRecord" />
+        <EntityTypeShape EntityType="DomainModel.BillingItem" Width="2.625" PointX="8.25" PointY="6.5" FillColor="Purple" />
         <AssociationConnector Association="DomainModel.BillingDemandBillingRecord" />
         <AssociationConnector Association="DomainModel.InvoiceBillingRecord" />
         <AssociationConnector Association="DomainModel.InvoiceInvoice" />
+        <AssociationConnector Association="DomainModel.BillableItemBillingItem" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

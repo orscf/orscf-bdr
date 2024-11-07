@@ -4,8 +4,10 @@ namespace MedicalResearch.BillingData {
 
   public static class BdrCapabilities {
 
-    public const string ExecutorBilling = "ExecutorBilling";
-    public const string SponsorBilling = "SponsorBilling";
+    public const string BdrStoreAccess = "BdrStoreAccess";
+
+    //public const string ExecutorBilling = "ExecutorBilling";
+    //public const string SponsorBilling = "SponsorBilling";
 
   }
 
@@ -21,7 +23,7 @@ namespace MedicalResearch.BillingData {
     /// <summary>
     /// returns a list of API-features (there are several 'services' for different use cases, described by ORSCF)
     /// supported by this implementation. The following values are possible:
-    /// 'ExecutorBilling', 'SponsorBilling'
+    /// 'BdrStoreAccess'
     /// </summary>
     string[] GetCapabilities();
 
