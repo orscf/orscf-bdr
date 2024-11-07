@@ -7,7 +7,13 @@ This files contains a version history including all changes relevant for semanti
 
 ## Upcoming Changes
 
-* Repaired generation of documentation-files
+*(none)*
+
+
+
+## v 2.0.6
+released **2024-11-07**, including:
+ - Repaired generation of documentation-files
 
 
 
