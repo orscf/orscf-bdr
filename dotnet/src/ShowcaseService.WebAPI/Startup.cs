@@ -63,6 +63,7 @@ namespace MedicalResearch.BillingData.WebAPI {
         c.IncludeXmlComments(outDir + "ORSCF.BillingData.Contract.xml", true);
         c.IncludeXmlComments(outDir + "ORSCF.BillingData.Service.xml", true);
         c.IncludeXmlComments(outDir + "ORSCF.BillingData.Service.WebAPI.xml", true);
+        c.IncludeXmlComments(outDir + "FUSE-fx.RepositoryContract.xml", true);
 
         #region bearer
 

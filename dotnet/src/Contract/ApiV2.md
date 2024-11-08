@@ -29,9 +29,9 @@ no parameters
 |----|----|-----------|
 |filter|[ExpressionTree](#ExpressionTree)|**IN**-Param (required): (from 'FUSE-fx.RepositoryContract')|
 |sortedBy|String[] *(array)*|**IN**-Param (required): An array of field names to be used for sorting the results (before 'limit' and 'skip' is processed). Use the character "^" as prefix for DESC sorting. Sample: ['^Age','Lastname']|
-|limit|Int32? *(nullable)*|**IN**-Param (optional)|
-|skip|Int32? *(nullable)*|**IN**-Param (optional)|
-**return value:** [EntityRef_Guid](#EntityRef_Guid)[] *(array)*
+|limit|Int32?|**IN**-Param (optional)|
+|skip|Int32?|**IN**-Param (optional)|
+**return value:** Guid[] *(array)*
 
 
 
@@ -42,9 +42,9 @@ NOTE: this method can only be used, if the 'SupportsStringBaseSearchExpressions'
 |----|----|-----------|
 |searchExpression|String|**IN**-Param (required)|
 |sortedBy|String[] *(array)*|**IN**-Param (required): An array of field names to be used for sorting the results (before 'limit' and 'skip' is processed). Use the character "^" as prefix for DESC sorting. Sample: ['^Age','Lastname']|
-|limit|Int32? *(nullable)*|**IN**-Param (optional)|
-|skip|Int32? *(nullable)*|**IN**-Param (optional)|
-**return value:** [EntityRef_Guid](#EntityRef_Guid)[] *(array)*
+|limit|Int32?|**IN**-Param (optional)|
+|skip|Int32?|**IN**-Param (optional)|
+**return value:** Guid[] *(array)*
 
 
 
@@ -53,7 +53,7 @@ NOTE: this method can only be used, if the 'SupportsStringBaseSearchExpressions'
 |Name|Type|Description|
 |----|----|-----------|
 |keysToLoad|Guid[] *(array)*|**IN**-Param (required)|
-**return value:** [EntityRef_Guid](#EntityRef_Guid)[] *(array)*
+**return value:** Guid[] *(array)*
 
 
 
@@ -63,8 +63,8 @@ NOTE: this method can only be used, if the 'SupportsStringBaseSearchExpressions'
 |----|----|-----------|
 |filter|[ExpressionTree](#ExpressionTree)|**IN**-Param (required): (from 'FUSE-fx.RepositoryContract')|
 |sortedBy|String[] *(array)*|**IN**-Param (required): An array of field names to be used for sorting the results (before 'limit' and 'skip' is processed). Use the character "^" as prefix for DESC sorting. Sample: ['^Age','Lastname']|
-|limit|Int32? *(nullable)*|**IN**-Param (optional)|
-|skip|Int32? *(nullable)*|**IN**-Param (optional)|
+|limit|Int32?|**IN**-Param (optional)|
+|skip|Int32?|**IN**-Param (optional)|
 **return value:** [BillableItem](#BillableItem)[] *(array)*
 
 
@@ -76,8 +76,8 @@ NOTE: this method can only be used, if the 'SupportsStringBaseSearchExpressions'
 |----|----|-----------|
 |searchExpression|String|**IN**-Param (required)|
 |sortedBy|String[] *(array)*|**IN**-Param (required): An array of field names to be used for sorting the results (before 'limit' and 'skip' is processed). Use the character "^" as prefix for DESC sorting. Sample: ['^Age','Lastname']|
-|limit|Int32? *(nullable)*|**IN**-Param (optional)|
-|skip|Int32? *(nullable)*|**IN**-Param (optional)|
+|limit|Int32?|**IN**-Param (optional)|
+|skip|Int32?|**IN**-Param (optional)|
 **return value:** [BillableItem](#BillableItem)[] *(array)*
 
 
@@ -98,9 +98,9 @@ NOTE: this method can only be used, if the 'SupportsStringBaseSearchExpressions'
 |filter|[ExpressionTree](#ExpressionTree)|**IN**-Param (required): (from 'FUSE-fx.RepositoryContract')|
 |includedFieldNames|String[] *(array)*|**IN**-Param (required): An array of field names to be loaded|
 |sortedBy|String[] *(array)*|**IN**-Param (required): An array of field names to be used for sorting the results (before 'limit' and 'skip' is processed). Use the character "^" as prefix for DESC sorting. Sample: ['^Age','Lastname']|
-|limit|Int32? *(nullable)*|**IN**-Param (optional)|
-|skip|Int32? *(nullable)*|**IN**-Param (optional)|
-**return value:** Dictionary_String_Object[] *(array)*
+|limit|Int32?|**IN**-Param (optional)|
+|skip|Int32?|**IN**-Param (optional)|
+**return value:** String[] *(array)*
 
 
 
@@ -112,9 +112,9 @@ NOTE: this method can only be used, if the 'SupportsStringBaseSearchExpressions'
 |searchExpression|String|**IN**-Param (required)|
 |includedFieldNames|String[] *(array)*|**IN**-Param (required): An array of field names to be loaded|
 |sortedBy|String[] *(array)*|**IN**-Param (required): An array of field names to be used for sorting the results (before 'limit' and 'skip' is processed). Use the character "^" as prefix for DESC sorting. Sample: ['^Age','Lastname']|
-|limit|Int32? *(nullable)*|**IN**-Param (optional)|
-|skip|Int32? *(nullable)*|**IN**-Param (optional)|
-**return value:** Dictionary_String_Object[] *(array)*
+|limit|Int32?|**IN**-Param (optional)|
+|skip|Int32?|**IN**-Param (optional)|
+**return value:** String[] *(array)*
 
 
 
@@ -124,7 +124,7 @@ NOTE: this method can only be used, if the 'SupportsStringBaseSearchExpressions'
 |----|----|-----------|
 |keysToLoad|Guid[] *(array)*|**IN**-Param (required)|
 |includedFieldNames|String[] *(array)*|**IN**-Param (required)|
-**return value:** Dictionary_String_Object[] *(array)*
+**return value:** String[] *(array)*
 
 
 
@@ -166,8 +166,8 @@ NOTE: this method can only be used, if the 'SupportsStringBaseSearchExpressions'
 #### Parameters:
 |Name|Type|Description|
 |----|----|-----------|
-|fields|Dictionary_String_Object|**IN**-Param (required)|
-**return value:** Dictionary_String_Object
+|fields|*Dict*<String,Object>|**IN**-Param (required)|
+**return value:** *Dict*<String,Object>
 
 
 
@@ -184,8 +184,8 @@ NOTE: this method can only be used, if the 'SupportsStringBaseSearchExpressions'
 #### Parameters:
 |Name|Type|Description|
 |----|----|-----------|
-|fields|Dictionary_String_Object|**IN**-Param (required)|
-**return value:** Dictionary_String_Object
+|fields|*Dict*<String,Object>|**IN**-Param (required)|
+**return value:** *Dict*<String,Object>
 
 
 
@@ -212,7 +212,7 @@ NOTE: this method can only be used, if the 'SupportsStringBaseSearchExpressions'
 |Name|Type|Description|
 |----|----|-----------|
 |keysToUpdate|Guid[] *(array)*|**IN**-Param (required)|
-|fields|Dictionary_String_Object|**IN**-Param (required)|
+|fields|*Dict*<String,Object>|**IN**-Param (required)|
 **return value:** Guid[] *(array)*
 
 
@@ -222,7 +222,7 @@ NOTE: this method can only be used, if the 'SupportsStringBaseSearchExpressions'
 |Name|Type|Description|
 |----|----|-----------|
 |filter|[ExpressionTree](#ExpressionTree)|**IN**-Param (required): (from 'FUSE-fx.RepositoryContract')|
-|fields|Dictionary_String_Object|**IN**-Param (required)|
+|fields|*Dict*<String,Object>|**IN**-Param (required)|
 **return value:** Guid[] *(array)*
 
 
@@ -232,7 +232,7 @@ NOTE: this method can only be used, if the 'SupportsStringBaseSearchExpressions'
 |Name|Type|Description|
 |----|----|-----------|
 |searchExpression|String|**IN**-Param (required)|
-|fields|Dictionary_String_Object|**IN**-Param (required)|
+|fields|*Dict*<String,Object>|**IN**-Param (required)|
 **return value:** Guid[] *(array)*
 
 
@@ -284,9 +284,9 @@ no parameters
 |----|----|-----------|
 |filter|[ExpressionTree](#ExpressionTree)|**IN**-Param (required): (from 'FUSE-fx.RepositoryContract')|
 |sortedBy|String[] *(array)*|**IN**-Param (required): An array of field names to be used for sorting the results (before 'limit' and 'skip' is processed). Use the character "^" as prefix for DESC sorting. Sample: ['^Age','Lastname']|
-|limit|Int32? *(nullable)*|**IN**-Param (optional)|
-|skip|Int32? *(nullable)*|**IN**-Param (optional)|
-**return value:** [EntityRef_Guid](#EntityRef_Guid)[] *(array)*
+|limit|Int32?|**IN**-Param (optional)|
+|skip|Int32?|**IN**-Param (optional)|
+**return value:** Guid[] *(array)*
 
 
 
@@ -297,9 +297,9 @@ NOTE: this method can only be used, if the 'SupportsStringBaseSearchExpressions'
 |----|----|-----------|
 |searchExpression|String|**IN**-Param (required)|
 |sortedBy|String[] *(array)*|**IN**-Param (required): An array of field names to be used for sorting the results (before 'limit' and 'skip' is processed). Use the character "^" as prefix for DESC sorting. Sample: ['^Age','Lastname']|
-|limit|Int32? *(nullable)*|**IN**-Param (optional)|
-|skip|Int32? *(nullable)*|**IN**-Param (optional)|
-**return value:** [EntityRef_Guid](#EntityRef_Guid)[] *(array)*
+|limit|Int32?|**IN**-Param (optional)|
+|skip|Int32?|**IN**-Param (optional)|
+**return value:** Guid[] *(array)*
 
 
 
@@ -308,7 +308,7 @@ NOTE: this method can only be used, if the 'SupportsStringBaseSearchExpressions'
 |Name|Type|Description|
 |----|----|-----------|
 |keysToLoad|Guid[] *(array)*|**IN**-Param (required)|
-**return value:** [EntityRef_Guid](#EntityRef_Guid)[] *(array)*
+**return value:** Guid[] *(array)*
 
 
 
@@ -318,8 +318,8 @@ NOTE: this method can only be used, if the 'SupportsStringBaseSearchExpressions'
 |----|----|-----------|
 |filter|[ExpressionTree](#ExpressionTree)|**IN**-Param (required): (from 'FUSE-fx.RepositoryContract')|
 |sortedBy|String[] *(array)*|**IN**-Param (required): An array of field names to be used for sorting the results (before 'limit' and 'skip' is processed). Use the character "^" as prefix for DESC sorting. Sample: ['^Age','Lastname']|
-|limit|Int32? *(nullable)*|**IN**-Param (optional)|
-|skip|Int32? *(nullable)*|**IN**-Param (optional)|
+|limit|Int32?|**IN**-Param (optional)|
+|skip|Int32?|**IN**-Param (optional)|
 **return value:** [StudyExecutionScope](#StudyExecutionScope)[] *(array)*
 
 
@@ -331,8 +331,8 @@ NOTE: this method can only be used, if the 'SupportsStringBaseSearchExpressions'
 |----|----|-----------|
 |searchExpression|String|**IN**-Param (required)|
 |sortedBy|String[] *(array)*|**IN**-Param (required): An array of field names to be used for sorting the results (before 'limit' and 'skip' is processed). Use the character "^" as prefix for DESC sorting. Sample: ['^Age','Lastname']|
-|limit|Int32? *(nullable)*|**IN**-Param (optional)|
-|skip|Int32? *(nullable)*|**IN**-Param (optional)|
+|limit|Int32?|**IN**-Param (optional)|
+|skip|Int32?|**IN**-Param (optional)|
 **return value:** [StudyExecutionScope](#StudyExecutionScope)[] *(array)*
 
 
@@ -353,9 +353,9 @@ NOTE: this method can only be used, if the 'SupportsStringBaseSearchExpressions'
 |filter|[ExpressionTree](#ExpressionTree)|**IN**-Param (required): (from 'FUSE-fx.RepositoryContract')|
 |includedFieldNames|String[] *(array)*|**IN**-Param (required): An array of field names to be loaded|
 |sortedBy|String[] *(array)*|**IN**-Param (required): An array of field names to be used for sorting the results (before 'limit' and 'skip' is processed). Use the character "^" as prefix for DESC sorting. Sample: ['^Age','Lastname']|
-|limit|Int32? *(nullable)*|**IN**-Param (optional)|
-|skip|Int32? *(nullable)*|**IN**-Param (optional)|
-**return value:** Dictionary_String_Object[] *(array)*
+|limit|Int32?|**IN**-Param (optional)|
+|skip|Int32?|**IN**-Param (optional)|
+**return value:** String[] *(array)*
 
 
 
@@ -367,9 +367,9 @@ NOTE: this method can only be used, if the 'SupportsStringBaseSearchExpressions'
 |searchExpression|String|**IN**-Param (required)|
 |includedFieldNames|String[] *(array)*|**IN**-Param (required): An array of field names to be loaded|
 |sortedBy|String[] *(array)*|**IN**-Param (required): An array of field names to be used for sorting the results (before 'limit' and 'skip' is processed). Use the character "^" as prefix for DESC sorting. Sample: ['^Age','Lastname']|
-|limit|Int32? *(nullable)*|**IN**-Param (optional)|
-|skip|Int32? *(nullable)*|**IN**-Param (optional)|
-**return value:** Dictionary_String_Object[] *(array)*
+|limit|Int32?|**IN**-Param (optional)|
+|skip|Int32?|**IN**-Param (optional)|
+**return value:** String[] *(array)*
 
 
 
@@ -379,7 +379,7 @@ NOTE: this method can only be used, if the 'SupportsStringBaseSearchExpressions'
 |----|----|-----------|
 |keysToLoad|Guid[] *(array)*|**IN**-Param (required)|
 |includedFieldNames|String[] *(array)*|**IN**-Param (required)|
-**return value:** Dictionary_String_Object[] *(array)*
+**return value:** String[] *(array)*
 
 
 
@@ -421,8 +421,8 @@ NOTE: this method can only be used, if the 'SupportsStringBaseSearchExpressions'
 #### Parameters:
 |Name|Type|Description|
 |----|----|-----------|
-|fields|Dictionary_String_Object|**IN**-Param (required)|
-**return value:** Dictionary_String_Object
+|fields|*Dict*<String,Object>|**IN**-Param (required)|
+**return value:** *Dict*<String,Object>
 
 
 
@@ -439,8 +439,8 @@ NOTE: this method can only be used, if the 'SupportsStringBaseSearchExpressions'
 #### Parameters:
 |Name|Type|Description|
 |----|----|-----------|
-|fields|Dictionary_String_Object|**IN**-Param (required)|
-**return value:** Dictionary_String_Object
+|fields|*Dict*<String,Object>|**IN**-Param (required)|
+**return value:** *Dict*<String,Object>
 
 
 
@@ -467,7 +467,7 @@ NOTE: this method can only be used, if the 'SupportsStringBaseSearchExpressions'
 |Name|Type|Description|
 |----|----|-----------|
 |keysToUpdate|Guid[] *(array)*|**IN**-Param (required)|
-|fields|Dictionary_String_Object|**IN**-Param (required)|
+|fields|*Dict*<String,Object>|**IN**-Param (required)|
 **return value:** Guid[] *(array)*
 
 
@@ -477,7 +477,7 @@ NOTE: this method can only be used, if the 'SupportsStringBaseSearchExpressions'
 |Name|Type|Description|
 |----|----|-----------|
 |filter|[ExpressionTree](#ExpressionTree)|**IN**-Param (required): (from 'FUSE-fx.RepositoryContract')|
-|fields|Dictionary_String_Object|**IN**-Param (required)|
+|fields|*Dict*<String,Object>|**IN**-Param (required)|
 **return value:** Guid[] *(array)*
 
 
@@ -487,7 +487,7 @@ NOTE: this method can only be used, if the 'SupportsStringBaseSearchExpressions'
 |Name|Type|Description|
 |----|----|-----------|
 |searchExpression|String|**IN**-Param (required)|
-|fields|Dictionary_String_Object|**IN**-Param (required)|
+|fields|*Dict*<String,Object>|**IN**-Param (required)|
 **return value:** Guid[] *(array)*
 
 
@@ -539,9 +539,9 @@ no parameters
 |----|----|-----------|
 |filter|[ExpressionTree](#ExpressionTree)|**IN**-Param (required): (from 'FUSE-fx.RepositoryContract')|
 |sortedBy|String[] *(array)*|**IN**-Param (required): An array of field names to be used for sorting the results (before 'limit' and 'skip' is processed). Use the character "^" as prefix for DESC sorting. Sample: ['^Age','Lastname']|
-|limit|Int32? *(nullable)*|**IN**-Param (optional)|
-|skip|Int32? *(nullable)*|**IN**-Param (optional)|
-**return value:** [EntityRef_Guid](#EntityRef_Guid)[] *(array)*
+|limit|Int32?|**IN**-Param (optional)|
+|skip|Int32?|**IN**-Param (optional)|
+**return value:** Guid[] *(array)*
 
 
 
@@ -552,9 +552,9 @@ NOTE: this method can only be used, if the 'SupportsStringBaseSearchExpressions'
 |----|----|-----------|
 |searchExpression|String|**IN**-Param (required)|
 |sortedBy|String[] *(array)*|**IN**-Param (required): An array of field names to be used for sorting the results (before 'limit' and 'skip' is processed). Use the character "^" as prefix for DESC sorting. Sample: ['^Age','Lastname']|
-|limit|Int32? *(nullable)*|**IN**-Param (optional)|
-|skip|Int32? *(nullable)*|**IN**-Param (optional)|
-**return value:** [EntityRef_Guid](#EntityRef_Guid)[] *(array)*
+|limit|Int32?|**IN**-Param (optional)|
+|skip|Int32?|**IN**-Param (optional)|
+**return value:** Guid[] *(array)*
 
 
 
@@ -563,7 +563,7 @@ NOTE: this method can only be used, if the 'SupportsStringBaseSearchExpressions'
 |Name|Type|Description|
 |----|----|-----------|
 |keysToLoad|Guid[] *(array)*|**IN**-Param (required)|
-**return value:** [EntityRef_Guid](#EntityRef_Guid)[] *(array)*
+**return value:** Guid[] *(array)*
 
 
 
@@ -573,8 +573,8 @@ NOTE: this method can only be used, if the 'SupportsStringBaseSearchExpressions'
 |----|----|-----------|
 |filter|[ExpressionTree](#ExpressionTree)|**IN**-Param (required): (from 'FUSE-fx.RepositoryContract')|
 |sortedBy|String[] *(array)*|**IN**-Param (required): An array of field names to be used for sorting the results (before 'limit' and 'skip' is processed). Use the character "^" as prefix for DESC sorting. Sample: ['^Age','Lastname']|
-|limit|Int32? *(nullable)*|**IN**-Param (optional)|
-|skip|Int32? *(nullable)*|**IN**-Param (optional)|
+|limit|Int32?|**IN**-Param (optional)|
+|skip|Int32?|**IN**-Param (optional)|
 **return value:** [BillingDemand](#BillingDemand)[] *(array)*
 
 
@@ -586,8 +586,8 @@ NOTE: this method can only be used, if the 'SupportsStringBaseSearchExpressions'
 |----|----|-----------|
 |searchExpression|String|**IN**-Param (required)|
 |sortedBy|String[] *(array)*|**IN**-Param (required): An array of field names to be used for sorting the results (before 'limit' and 'skip' is processed). Use the character "^" as prefix for DESC sorting. Sample: ['^Age','Lastname']|
-|limit|Int32? *(nullable)*|**IN**-Param (optional)|
-|skip|Int32? *(nullable)*|**IN**-Param (optional)|
+|limit|Int32?|**IN**-Param (optional)|
+|skip|Int32?|**IN**-Param (optional)|
 **return value:** [BillingDemand](#BillingDemand)[] *(array)*
 
 
@@ -608,9 +608,9 @@ NOTE: this method can only be used, if the 'SupportsStringBaseSearchExpressions'
 |filter|[ExpressionTree](#ExpressionTree)|**IN**-Param (required): (from 'FUSE-fx.RepositoryContract')|
 |includedFieldNames|String[] *(array)*|**IN**-Param (required): An array of field names to be loaded|
 |sortedBy|String[] *(array)*|**IN**-Param (required): An array of field names to be used for sorting the results (before 'limit' and 'skip' is processed). Use the character "^" as prefix for DESC sorting. Sample: ['^Age','Lastname']|
-|limit|Int32? *(nullable)*|**IN**-Param (optional)|
-|skip|Int32? *(nullable)*|**IN**-Param (optional)|
-**return value:** Dictionary_String_Object[] *(array)*
+|limit|Int32?|**IN**-Param (optional)|
+|skip|Int32?|**IN**-Param (optional)|
+**return value:** String[] *(array)*
 
 
 
@@ -622,9 +622,9 @@ NOTE: this method can only be used, if the 'SupportsStringBaseSearchExpressions'
 |searchExpression|String|**IN**-Param (required)|
 |includedFieldNames|String[] *(array)*|**IN**-Param (required): An array of field names to be loaded|
 |sortedBy|String[] *(array)*|**IN**-Param (required): An array of field names to be used for sorting the results (before 'limit' and 'skip' is processed). Use the character "^" as prefix for DESC sorting. Sample: ['^Age','Lastname']|
-|limit|Int32? *(nullable)*|**IN**-Param (optional)|
-|skip|Int32? *(nullable)*|**IN**-Param (optional)|
-**return value:** Dictionary_String_Object[] *(array)*
+|limit|Int32?|**IN**-Param (optional)|
+|skip|Int32?|**IN**-Param (optional)|
+**return value:** String[] *(array)*
 
 
 
@@ -634,7 +634,7 @@ NOTE: this method can only be used, if the 'SupportsStringBaseSearchExpressions'
 |----|----|-----------|
 |keysToLoad|Guid[] *(array)*|**IN**-Param (required)|
 |includedFieldNames|String[] *(array)*|**IN**-Param (required)|
-**return value:** Dictionary_String_Object[] *(array)*
+**return value:** String[] *(array)*
 
 
 
@@ -676,8 +676,8 @@ NOTE: this method can only be used, if the 'SupportsStringBaseSearchExpressions'
 #### Parameters:
 |Name|Type|Description|
 |----|----|-----------|
-|fields|Dictionary_String_Object|**IN**-Param (required)|
-**return value:** Dictionary_String_Object
+|fields|*Dict*<String,Object>|**IN**-Param (required)|
+**return value:** *Dict*<String,Object>
 
 
 
@@ -694,8 +694,8 @@ NOTE: this method can only be used, if the 'SupportsStringBaseSearchExpressions'
 #### Parameters:
 |Name|Type|Description|
 |----|----|-----------|
-|fields|Dictionary_String_Object|**IN**-Param (required)|
-**return value:** Dictionary_String_Object
+|fields|*Dict*<String,Object>|**IN**-Param (required)|
+**return value:** *Dict*<String,Object>
 
 
 
@@ -722,7 +722,7 @@ NOTE: this method can only be used, if the 'SupportsStringBaseSearchExpressions'
 |Name|Type|Description|
 |----|----|-----------|
 |keysToUpdate|Guid[] *(array)*|**IN**-Param (required)|
-|fields|Dictionary_String_Object|**IN**-Param (required)|
+|fields|*Dict*<String,Object>|**IN**-Param (required)|
 **return value:** Guid[] *(array)*
 
 
@@ -732,7 +732,7 @@ NOTE: this method can only be used, if the 'SupportsStringBaseSearchExpressions'
 |Name|Type|Description|
 |----|----|-----------|
 |filter|[ExpressionTree](#ExpressionTree)|**IN**-Param (required): (from 'FUSE-fx.RepositoryContract')|
-|fields|Dictionary_String_Object|**IN**-Param (required)|
+|fields|*Dict*<String,Object>|**IN**-Param (required)|
 **return value:** Guid[] *(array)*
 
 
@@ -742,7 +742,7 @@ NOTE: this method can only be used, if the 'SupportsStringBaseSearchExpressions'
 |Name|Type|Description|
 |----|----|-----------|
 |searchExpression|String|**IN**-Param (required)|
-|fields|Dictionary_String_Object|**IN**-Param (required)|
+|fields|*Dict*<String,Object>|**IN**-Param (required)|
 **return value:** Guid[] *(array)*
 
 
@@ -794,9 +794,9 @@ no parameters
 |----|----|-----------|
 |filter|[ExpressionTree](#ExpressionTree)|**IN**-Param (required): (from 'FUSE-fx.RepositoryContract')|
 |sortedBy|String[] *(array)*|**IN**-Param (required): An array of field names to be used for sorting the results (before 'limit' and 'skip' is processed). Use the character "^" as prefix for DESC sorting. Sample: ['^Age','Lastname']|
-|limit|Int32? *(nullable)*|**IN**-Param (optional)|
-|skip|Int32? *(nullable)*|**IN**-Param (optional)|
-**return value:** [EntityRef_Int64](#EntityRef_Int64)[] *(array)*
+|limit|Int32?|**IN**-Param (optional)|
+|skip|Int32?|**IN**-Param (optional)|
+**return value:** Int64[] *(array)*
 
 
 
@@ -807,9 +807,9 @@ NOTE: this method can only be used, if the 'SupportsStringBaseSearchExpressions'
 |----|----|-----------|
 |searchExpression|String|**IN**-Param (required)|
 |sortedBy|String[] *(array)*|**IN**-Param (required): An array of field names to be used for sorting the results (before 'limit' and 'skip' is processed). Use the character "^" as prefix for DESC sorting. Sample: ['^Age','Lastname']|
-|limit|Int32? *(nullable)*|**IN**-Param (optional)|
-|skip|Int32? *(nullable)*|**IN**-Param (optional)|
-**return value:** [EntityRef_Int64](#EntityRef_Int64)[] *(array)*
+|limit|Int32?|**IN**-Param (optional)|
+|skip|Int32?|**IN**-Param (optional)|
+**return value:** Int64[] *(array)*
 
 
 
@@ -818,7 +818,7 @@ NOTE: this method can only be used, if the 'SupportsStringBaseSearchExpressions'
 |Name|Type|Description|
 |----|----|-----------|
 |keysToLoad|Int64[] *(array)*|**IN**-Param (required)|
-**return value:** [EntityRef_Int64](#EntityRef_Int64)[] *(array)*
+**return value:** Int64[] *(array)*
 
 
 
@@ -828,8 +828,8 @@ NOTE: this method can only be used, if the 'SupportsStringBaseSearchExpressions'
 |----|----|-----------|
 |filter|[ExpressionTree](#ExpressionTree)|**IN**-Param (required): (from 'FUSE-fx.RepositoryContract')|
 |sortedBy|String[] *(array)*|**IN**-Param (required): An array of field names to be used for sorting the results (before 'limit' and 'skip' is processed). Use the character "^" as prefix for DESC sorting. Sample: ['^Age','Lastname']|
-|limit|Int32? *(nullable)*|**IN**-Param (optional)|
-|skip|Int32? *(nullable)*|**IN**-Param (optional)|
+|limit|Int32?|**IN**-Param (optional)|
+|skip|Int32?|**IN**-Param (optional)|
 **return value:** [BillingItem](#BillingItem)[] *(array)*
 
 
@@ -841,8 +841,8 @@ NOTE: this method can only be used, if the 'SupportsStringBaseSearchExpressions'
 |----|----|-----------|
 |searchExpression|String|**IN**-Param (required)|
 |sortedBy|String[] *(array)*|**IN**-Param (required): An array of field names to be used for sorting the results (before 'limit' and 'skip' is processed). Use the character "^" as prefix for DESC sorting. Sample: ['^Age','Lastname']|
-|limit|Int32? *(nullable)*|**IN**-Param (optional)|
-|skip|Int32? *(nullable)*|**IN**-Param (optional)|
+|limit|Int32?|**IN**-Param (optional)|
+|skip|Int32?|**IN**-Param (optional)|
 **return value:** [BillingItem](#BillingItem)[] *(array)*
 
 
@@ -863,9 +863,9 @@ NOTE: this method can only be used, if the 'SupportsStringBaseSearchExpressions'
 |filter|[ExpressionTree](#ExpressionTree)|**IN**-Param (required): (from 'FUSE-fx.RepositoryContract')|
 |includedFieldNames|String[] *(array)*|**IN**-Param (required): An array of field names to be loaded|
 |sortedBy|String[] *(array)*|**IN**-Param (required): An array of field names to be used for sorting the results (before 'limit' and 'skip' is processed). Use the character "^" as prefix for DESC sorting. Sample: ['^Age','Lastname']|
-|limit|Int32? *(nullable)*|**IN**-Param (optional)|
-|skip|Int32? *(nullable)*|**IN**-Param (optional)|
-**return value:** Dictionary_String_Object[] *(array)*
+|limit|Int32?|**IN**-Param (optional)|
+|skip|Int32?|**IN**-Param (optional)|
+**return value:** String[] *(array)*
 
 
 
@@ -877,9 +877,9 @@ NOTE: this method can only be used, if the 'SupportsStringBaseSearchExpressions'
 |searchExpression|String|**IN**-Param (required)|
 |includedFieldNames|String[] *(array)*|**IN**-Param (required): An array of field names to be loaded|
 |sortedBy|String[] *(array)*|**IN**-Param (required): An array of field names to be used for sorting the results (before 'limit' and 'skip' is processed). Use the character "^" as prefix for DESC sorting. Sample: ['^Age','Lastname']|
-|limit|Int32? *(nullable)*|**IN**-Param (optional)|
-|skip|Int32? *(nullable)*|**IN**-Param (optional)|
-**return value:** Dictionary_String_Object[] *(array)*
+|limit|Int32?|**IN**-Param (optional)|
+|skip|Int32?|**IN**-Param (optional)|
+**return value:** String[] *(array)*
 
 
 
@@ -889,7 +889,7 @@ NOTE: this method can only be used, if the 'SupportsStringBaseSearchExpressions'
 |----|----|-----------|
 |keysToLoad|Int64[] *(array)*|**IN**-Param (required)|
 |includedFieldNames|String[] *(array)*|**IN**-Param (required)|
-**return value:** Dictionary_String_Object[] *(array)*
+**return value:** String[] *(array)*
 
 
 
@@ -931,8 +931,8 @@ NOTE: this method can only be used, if the 'SupportsStringBaseSearchExpressions'
 #### Parameters:
 |Name|Type|Description|
 |----|----|-----------|
-|fields|Dictionary_String_Object|**IN**-Param (required)|
-**return value:** Dictionary_String_Object
+|fields|*Dict*<String,Object>|**IN**-Param (required)|
+**return value:** *Dict*<String,Object>
 
 
 
@@ -949,8 +949,8 @@ NOTE: this method can only be used, if the 'SupportsStringBaseSearchExpressions'
 #### Parameters:
 |Name|Type|Description|
 |----|----|-----------|
-|fields|Dictionary_String_Object|**IN**-Param (required)|
-**return value:** Dictionary_String_Object
+|fields|*Dict*<String,Object>|**IN**-Param (required)|
+**return value:** *Dict*<String,Object>
 
 
 
@@ -977,7 +977,7 @@ NOTE: this method can only be used, if the 'SupportsStringBaseSearchExpressions'
 |Name|Type|Description|
 |----|----|-----------|
 |keysToUpdate|Int64[] *(array)*|**IN**-Param (required)|
-|fields|Dictionary_String_Object|**IN**-Param (required)|
+|fields|*Dict*<String,Object>|**IN**-Param (required)|
 **return value:** Int64[] *(array)*
 
 
@@ -987,7 +987,7 @@ NOTE: this method can only be used, if the 'SupportsStringBaseSearchExpressions'
 |Name|Type|Description|
 |----|----|-----------|
 |filter|[ExpressionTree](#ExpressionTree)|**IN**-Param (required): (from 'FUSE-fx.RepositoryContract')|
-|fields|Dictionary_String_Object|**IN**-Param (required)|
+|fields|*Dict*<String,Object>|**IN**-Param (required)|
 **return value:** Int64[] *(array)*
 
 
@@ -997,7 +997,7 @@ NOTE: this method can only be used, if the 'SupportsStringBaseSearchExpressions'
 |Name|Type|Description|
 |----|----|-----------|
 |searchExpression|String|**IN**-Param (required)|
-|fields|Dictionary_String_Object|**IN**-Param (required)|
+|fields|*Dict*<String,Object>|**IN**-Param (required)|
 **return value:** Int64[] *(array)*
 
 
@@ -1049,9 +1049,9 @@ no parameters
 |----|----|-----------|
 |filter|[ExpressionTree](#ExpressionTree)|**IN**-Param (required): (from 'FUSE-fx.RepositoryContract')|
 |sortedBy|String[] *(array)*|**IN**-Param (required): An array of field names to be used for sorting the results (before 'limit' and 'skip' is processed). Use the character "^" as prefix for DESC sorting. Sample: ['^Age','Lastname']|
-|limit|Int32? *(nullable)*|**IN**-Param (optional)|
-|skip|Int32? *(nullable)*|**IN**-Param (optional)|
-**return value:** [EntityRef_Guid](#EntityRef_Guid)[] *(array)*
+|limit|Int32?|**IN**-Param (optional)|
+|skip|Int32?|**IN**-Param (optional)|
+**return value:** Guid[] *(array)*
 
 
 
@@ -1062,9 +1062,9 @@ NOTE: this method can only be used, if the 'SupportsStringBaseSearchExpressions'
 |----|----|-----------|
 |searchExpression|String|**IN**-Param (required)|
 |sortedBy|String[] *(array)*|**IN**-Param (required): An array of field names to be used for sorting the results (before 'limit' and 'skip' is processed). Use the character "^" as prefix for DESC sorting. Sample: ['^Age','Lastname']|
-|limit|Int32? *(nullable)*|**IN**-Param (optional)|
-|skip|Int32? *(nullable)*|**IN**-Param (optional)|
-**return value:** [EntityRef_Guid](#EntityRef_Guid)[] *(array)*
+|limit|Int32?|**IN**-Param (optional)|
+|skip|Int32?|**IN**-Param (optional)|
+**return value:** Guid[] *(array)*
 
 
 
@@ -1073,7 +1073,7 @@ NOTE: this method can only be used, if the 'SupportsStringBaseSearchExpressions'
 |Name|Type|Description|
 |----|----|-----------|
 |keysToLoad|Guid[] *(array)*|**IN**-Param (required)|
-**return value:** [EntityRef_Guid](#EntityRef_Guid)[] *(array)*
+**return value:** Guid[] *(array)*
 
 
 
@@ -1083,8 +1083,8 @@ NOTE: this method can only be used, if the 'SupportsStringBaseSearchExpressions'
 |----|----|-----------|
 |filter|[ExpressionTree](#ExpressionTree)|**IN**-Param (required): (from 'FUSE-fx.RepositoryContract')|
 |sortedBy|String[] *(array)*|**IN**-Param (required): An array of field names to be used for sorting the results (before 'limit' and 'skip' is processed). Use the character "^" as prefix for DESC sorting. Sample: ['^Age','Lastname']|
-|limit|Int32? *(nullable)*|**IN**-Param (optional)|
-|skip|Int32? *(nullable)*|**IN**-Param (optional)|
+|limit|Int32?|**IN**-Param (optional)|
+|skip|Int32?|**IN**-Param (optional)|
 **return value:** [Invoice](#Invoice)[] *(array)*
 
 
@@ -1096,8 +1096,8 @@ NOTE: this method can only be used, if the 'SupportsStringBaseSearchExpressions'
 |----|----|-----------|
 |searchExpression|String|**IN**-Param (required)|
 |sortedBy|String[] *(array)*|**IN**-Param (required): An array of field names to be used for sorting the results (before 'limit' and 'skip' is processed). Use the character "^" as prefix for DESC sorting. Sample: ['^Age','Lastname']|
-|limit|Int32? *(nullable)*|**IN**-Param (optional)|
-|skip|Int32? *(nullable)*|**IN**-Param (optional)|
+|limit|Int32?|**IN**-Param (optional)|
+|skip|Int32?|**IN**-Param (optional)|
 **return value:** [Invoice](#Invoice)[] *(array)*
 
 
@@ -1118,9 +1118,9 @@ NOTE: this method can only be used, if the 'SupportsStringBaseSearchExpressions'
 |filter|[ExpressionTree](#ExpressionTree)|**IN**-Param (required): (from 'FUSE-fx.RepositoryContract')|
 |includedFieldNames|String[] *(array)*|**IN**-Param (required): An array of field names to be loaded|
 |sortedBy|String[] *(array)*|**IN**-Param (required): An array of field names to be used for sorting the results (before 'limit' and 'skip' is processed). Use the character "^" as prefix for DESC sorting. Sample: ['^Age','Lastname']|
-|limit|Int32? *(nullable)*|**IN**-Param (optional)|
-|skip|Int32? *(nullable)*|**IN**-Param (optional)|
-**return value:** Dictionary_String_Object[] *(array)*
+|limit|Int32?|**IN**-Param (optional)|
+|skip|Int32?|**IN**-Param (optional)|
+**return value:** String[] *(array)*
 
 
 
@@ -1132,9 +1132,9 @@ NOTE: this method can only be used, if the 'SupportsStringBaseSearchExpressions'
 |searchExpression|String|**IN**-Param (required)|
 |includedFieldNames|String[] *(array)*|**IN**-Param (required): An array of field names to be loaded|
 |sortedBy|String[] *(array)*|**IN**-Param (required): An array of field names to be used for sorting the results (before 'limit' and 'skip' is processed). Use the character "^" as prefix for DESC sorting. Sample: ['^Age','Lastname']|
-|limit|Int32? *(nullable)*|**IN**-Param (optional)|
-|skip|Int32? *(nullable)*|**IN**-Param (optional)|
-**return value:** Dictionary_String_Object[] *(array)*
+|limit|Int32?|**IN**-Param (optional)|
+|skip|Int32?|**IN**-Param (optional)|
+**return value:** String[] *(array)*
 
 
 
@@ -1144,7 +1144,7 @@ NOTE: this method can only be used, if the 'SupportsStringBaseSearchExpressions'
 |----|----|-----------|
 |keysToLoad|Guid[] *(array)*|**IN**-Param (required)|
 |includedFieldNames|String[] *(array)*|**IN**-Param (required)|
-**return value:** Dictionary_String_Object[] *(array)*
+**return value:** String[] *(array)*
 
 
 
@@ -1186,8 +1186,8 @@ NOTE: this method can only be used, if the 'SupportsStringBaseSearchExpressions'
 #### Parameters:
 |Name|Type|Description|
 |----|----|-----------|
-|fields|Dictionary_String_Object|**IN**-Param (required)|
-**return value:** Dictionary_String_Object
+|fields|*Dict*<String,Object>|**IN**-Param (required)|
+**return value:** *Dict*<String,Object>
 
 
 
@@ -1204,8 +1204,8 @@ NOTE: this method can only be used, if the 'SupportsStringBaseSearchExpressions'
 #### Parameters:
 |Name|Type|Description|
 |----|----|-----------|
-|fields|Dictionary_String_Object|**IN**-Param (required)|
-**return value:** Dictionary_String_Object
+|fields|*Dict*<String,Object>|**IN**-Param (required)|
+**return value:** *Dict*<String,Object>
 
 
 
@@ -1232,7 +1232,7 @@ NOTE: this method can only be used, if the 'SupportsStringBaseSearchExpressions'
 |Name|Type|Description|
 |----|----|-----------|
 |keysToUpdate|Guid[] *(array)*|**IN**-Param (required)|
-|fields|Dictionary_String_Object|**IN**-Param (required)|
+|fields|*Dict*<String,Object>|**IN**-Param (required)|
 **return value:** Guid[] *(array)*
 
 
@@ -1242,7 +1242,7 @@ NOTE: this method can only be used, if the 'SupportsStringBaseSearchExpressions'
 |Name|Type|Description|
 |----|----|-----------|
 |filter|[ExpressionTree](#ExpressionTree)|**IN**-Param (required): (from 'FUSE-fx.RepositoryContract')|
-|fields|Dictionary_String_Object|**IN**-Param (required)|
+|fields|*Dict*<String,Object>|**IN**-Param (required)|
 **return value:** Guid[] *(array)*
 
 
@@ -1252,7 +1252,7 @@ NOTE: this method can only be used, if the 'SupportsStringBaseSearchExpressions'
 |Name|Type|Description|
 |----|----|-----------|
 |searchExpression|String|**IN**-Param (required)|
-|fields|Dictionary_String_Object|**IN**-Param (required)|
+|fields|*Dict*<String,Object>|**IN**-Param (required)|
 **return value:** Guid[] *(array)*
 
 
@@ -1289,7 +1289,7 @@ NOTE: this method can only be used, if the 'SupportsStringBaseSearchExpressions'
 |ParticipantIdentifier|String|(required): identity of the patient which can be a randomization or screening number (the exact semantic is defined per study) *this field has a max length of 50|
 |VisitProcedureName|String|(required): unique invariant name of the visit-procedure as defined in the 'StudyWorkflowDefinition' (originated from the sponsor)|
 |UniqueExecutionName|String|(required): title of the visit execution as defined in the 'StudyWorkflowDefinition' (originated from the sponsor)|
-|ExecutionEndDateUtc|DateTime? *(nullable)*|(optional): *this field is optional|
+|ExecutionEndDateUtc|DateTime|(optional): *this field is optional|
 |Description|String|(optional): *this field is optional (use null as value)|
 |RelatedTo|String|(required): One of the following values: 'General' / 'Site' / 'Paticipant' (Requires a ParticipantIdentifier) / 'Visit' (Requires a ParticipantIdentifier and UniqueExecutionName)|
 
@@ -1303,7 +1303,7 @@ created by the sponsor
 |Id|Guid|(required)|
 |OfficialNumber|String|(required)|
 |StudyExecutionIdentifier|Guid|(required)|
-|TransmissionDateUtc|DateTime? *(nullable)*|(optional): *this field is optional|
+|TransmissionDateUtc|DateTime|(optional): *this field is optional|
 |CreationDateUtc|DateTime|(required)|
 |CreatedByPerson|String|(required)|
 
@@ -1316,16 +1316,16 @@ Respresents a Snapshot, containig al the values, which are required to be fixed 
 |----|----|-----------|
 |BillingItemId|Int64|(required)|
 |CreationDateUtc|DateTime|(required)|
-|SponsorValidationDateUtc|DateTime? *(nullable)*|(optional): *this field is optional|
-|ExecutorValidationDateUtc|DateTime? *(nullable)*|(optional): *this field is optional|
-|BillingDemandId|Guid? *(nullable)*|(optional): *this field is optional|
-|InvoiceId|Guid? *(nullable)*|(optional): *this field is optional|
+|SponsorValidationDateUtc|DateTime|(optional): *this field is optional|
+|ExecutorValidationDateUtc|DateTime|(optional): *this field is optional|
+|BillingDemandId|Guid|(optional): *this field is optional|
+|InvoiceId|Guid|(optional): *this field is optional|
 |FixedExecutionState|Int32|(required)|
 |FixedPriceOfItem|Decimal|(required): Including 'FixedPriceOfTasks' but excluding Taxes|
 |FixedPriceOfTasks|Decimal|(required): An additional info which is only relevant when declaing Subtasks|
 |FixedTaxPercentage|Decimal|(required)|
 |TasksRelatedInfo|String|(required)|
-|BillableItemUid|Guid? *(nullable)*|(optional): *this field is optional|
+|BillableItemUid|Guid|(optional): *this field is optional|
 |Description|String|(required)|
 
 
@@ -1339,12 +1339,12 @@ created by the executor-company
 |OfficialNumber|String|(required): the invoice number|
 |StudyExecutionIdentifier|Guid|(required)|
 |OffcialInvoiceDate|DateTime|(required)|
-|TransmissionDateUtc|DateTime? *(nullable)*|(optional): *this field is optional|
+|TransmissionDateUtc|DateTime|(optional): *this field is optional|
 |CreationDateUtc|DateTime|(required)|
 |CreatedByPerson|String|(required)|
-|PaymentSubmittedDateUtc|DateTime? *(nullable)*|(optional): *this field is optional|
-|PaymentReceivedDateUtc|DateTime? *(nullable)*|(optional): *this field is optional|
-|CorrectionOfInvoiceId|Guid? *(nullable)*|(optional): *this field is optional|
+|PaymentSubmittedDateUtc|DateTime|(optional): *this field is optional|
+|PaymentReceivedDateUtc|DateTime|(optional): *this field is optional|
+|CorrectionOfInvoiceId|Guid|(optional): *this field is optional|
 
 
 
@@ -1362,50 +1362,26 @@ created by the executor-company
 
 
 
-## EntityRef
-(from 'FUSE-fx.RepositoryContract')
-EntityRef (UNTYPED)
-#### Fields:
-|Name|Type|Description|
-|----|----|-----------|
-|Key|Object|(optional)|
-|Label|String|(optional)|
-
-
-
-## EntityRef_Guid
-(from 'FUSE-fx.RepositoryContract')
-EntityRef with Typed Key (generic)
-#### Fields:
-|Name|Type|Description|
-|----|----|-----------|
-|Key|Guid? *(nullable)*|(optional)|
-|Key|Object|(optional)|
-|Label|String|(optional)|
-
-
-
-## EntityRef_Int64
-(from 'FUSE-fx.RepositoryContract')
-EntityRef with Typed Key (generic)
-#### Fields:
-|Name|Type|Description|
-|----|----|-----------|
-|Key|Int64? *(nullable)*|(optional)|
-|Key|Object|(optional)|
-|Label|String|(optional)|
-
-
-
 ## ExpressionTree
 (from 'FUSE-fx.RepositoryContract')
 #### Fields:
 |Name|Type|Description|
 |----|----|-----------|
-|MatchAll|Boolean? *(nullable)*|(optional): true: AND-Relation | false: OR-Relation|
-|Negate|Boolean? *(nullable)*|(optional): Negates the result|
-|Predicates|List_FieldPredicate|(optional): Can contain ATOMIC predicates (FieldName~Value). NOTE: If there is more than one predicate with the same FieldName in combination with MatchAll=true, then this will lead to an subordinated OR-Expression dedicated to this field.|
-|SubTree|List_ExpressionTree|(optional)|
+|MatchAll|Boolean|(optional): true: AND-Relation | false: OR-Relation|
+|Negate|Boolean|(optional): Negates the result|
+|Predicates|*List*<[FieldPredicate](#FieldPredicate)>|(optional): Can contain ATOMIC predicates (FieldName~Value). NOTE: If there is more than one predicate with the same FieldName in combination with MatchAll=true, then this will lead to an subordinated OR-Expression dedicated to this field.|
+|SubTree|*List*<[ExpressionTree](#ExpressionTree)>|(optional)|
+
+
+
+## FieldPredicate
+(from 'FUSE-fx.RepositoryContract')
+#### Fields:
+|Name|Type|Description|
+|----|----|-----------|
+|FieldName|String|(optional)|
+|Operator|String|(optional): Wellknown operators like '==' '!=' (see 'FieldOperators'-Contants).|
+|Value|Object|(optional): The value to match! (NOTE: in th special case of using the 'in' operator, the given 'value' to match must NOT be scalar! Instead it must be an ARRAY. A match is given if a field equals to at least one value within that array.)|
 
 
 
@@ -1416,11 +1392,11 @@ capabilities of an IRepository.
 #### Fields:
 |Name|Type|Description|
 |----|----|-----------|
-|CanReadContent|Boolean? *(nullable)*|(optional): Indicates, that this repository offers access to load entities(classes) or some their entity fields (if this is false, then only EntityRefs are accessable)|
-|CanUpdateContent|Boolean? *(nullable)*|(optional)|
-|CanAddNewEntities|Boolean? *(nullable)*|(optional)|
-|CanDeleteEntities|Boolean? *(nullable)*|(optional)|
-|SupportsMassupdate|Boolean? *(nullable)*|(optional)|
-|SupportsKeyUpdate|Boolean? *(nullable)*|(optional)|
-|SupportsStringBasedSearchExpressions|Boolean? *(nullable)*|(optional)|
-|RequiresExternalKeys|Boolean? *(nullable)*|(optional): Indicates, that entities can only be added to this repository, if ther key fields are pre-initialized by the caller. If false, then the persistence-technology behind the repository implementation will auto-generate a new key by its own.|
+|CanReadContent|Boolean|(optional): Indicates, that this repository offers access to load entities(classes) or some their entity fields (if this is false, then only EntityRefs are accessable)|
+|CanUpdateContent|Boolean|(optional)|
+|CanAddNewEntities|Boolean|(optional)|
+|CanDeleteEntities|Boolean|(optional)|
+|SupportsMassupdate|Boolean|(optional)|
+|SupportsKeyUpdate|Boolean|(optional)|
+|SupportsStringBasedSearchExpressions|Boolean|(optional)|
+|RequiresExternalKeys|Boolean|(optional): Indicates, that entities can only be added to this repository, if ther key fields are pre-initialized by the caller. If false, then the persistence-technology behind the repository implementation will auto-generate a new key by its own.|
